@@ -1,30 +1,87 @@
 # Commands
 
+## Start containers
 ```sh
-#  Start containers
 $ docker-compose up -d
-# Builds first before starting containers
+```
+
+## Builds first before starting containers:
+
+```sh
 $ docker-compose up -d --build
+```
+
+## Enter containers through bash
+```sh
 $ docker compose exec app bash
 $ docker-compose exec db bash
+```
+
+## Enter commands from outside of containers
+```sh
 $ docker compose exec db mysql -V
 $ docker-compose exec web nginx -v
+```
+
+## Enter database's mysql
+```sh
+$ docker compose exec db bash
 $ mysql -u root -p
-# Seeding all
+```
+
+## Data seeding
+```sh
 $ php artisan db:seed
-# Seeding specific seeder
+```
+
+## Seeding specific seeder
+```sh
 $ php artisan db:seed --class=BooksSeeder
+```
+
+## After adding a new column
+```sh
+$ php artisan migrate
+$ php artisan db:seed
+```
+
+## Commands for making models/controllers/seeders
+```sh
 $ php artisan make:model RankingInfo -m
 $ php artisan make:model Book --migration
 $ php artisan make:controller BookController --api
 $ php artisan make:seeder RankingPostSeeder
-# When you add a new column:
-$ php artisan migrate
-$ php artisan db:seed
-# To redo a migration with a db that already exists
+```
+## Redo a migration with a database that already exists
+```sh
 $ php artisan migrate:refresh
 $ php artisan migrate:refresh --seed
+```
+
+```sh
 $ php artisan make:test ApiBlogControllerTest
 $ php artisan test
+```
+
+## Show available routes for project
+```sh
 $ php artisan route:list
 ```
+
+## MySQL Commands
+```sql
+-- List of databases
+show databases;
+
+-- Use database
+use DB_NAME_HERE
+
+-- Show column info from a table
+show columns from TABLE_NAME_HERE;
+
+-- Select command example
+select * from TABLE_NAME_HERE;
+```
+
+# Other
+- Local environment: http://localhost:8081/

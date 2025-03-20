@@ -14,11 +14,8 @@ class CreatePostInfosTable extends Migration
     public function up()
     {
         Schema::create('post_info', function (Blueprint $table) {
-            $table->id('post_info_id');
             $table->timestamps();
-            $table->unsignedBigInteger('ranking_categories_id');
-            $table->integer('rank_number');
-            $table->string('title');
+            $table->id('post_info_id');
             $table->unsignedBigInteger('user_id');
             $table->string('message_title');
             $table->string('message_text');

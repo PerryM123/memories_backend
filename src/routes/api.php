@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\PostInfoController;
 use App\Http\Controllers\RankInfoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +25,4 @@ Route::post('/ranking-post', [RankInfoController::class, 'store']);
 Route::get('/ranking-post/rank_info', [RankInfoController::class, 'getAllRankInfo']);
 Route::get('/ranking-post/ranking_categories', [RankInfoController::class, 'getAllCategories']);
 Route::get('/ranking-post/{rank_id}', [RankInfoController::class, 'index']);
+Route::get('/post-info', [PostInfoController::class, 'index']);

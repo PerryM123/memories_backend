@@ -84,4 +84,4 @@ select * from TABLE_NAME_HERE;
 ```
 
 # Other
-- Local environment: http://localhost:8081/
+- Local environment: http://local.memories.com/ or http://localhost:8081/

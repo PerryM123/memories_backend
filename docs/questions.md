@@ -7,3 +7,7 @@
 ## Is using unsignedBigInteger for foreign ids okay? What is the Laravel way of doing this?
 
 ## For creating seeders, ModelName::create() vs ModelName::insert()???
+
+## Snakecase? Camelcase? functions are camelcase but not always???
+
+## PSR-12??

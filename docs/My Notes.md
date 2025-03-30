@@ -54,6 +54,7 @@ In the future:
 - Users can send messages to other users
 
 ## Random notes
+- Model_Name::insert() can add arrays. Model_Name::create() only creates one element
 - I like this guy's DDD folder structure
   - https://medium.com/@leoonofre.oliversoft/developing-with-laravel-and-domain-driven-design-ddd-structuring-an-email-parsing-system-part-01-3a714b9f47c9
   - 日本語: https://aichi.blog/laravel-api-development-ddd-architecture/

@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             BooksSeeder::class,
             RankingCategoriesSeeder::class,
             RankInfoSeeder::class,
-            PostInfoSeeder::class
+            PostInfoSeeder::class,
+            UserInfoSeeder::class
         ]);
     }
 }

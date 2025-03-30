@@ -24,7 +24,8 @@
 
 ### 2. Clone project → コンテナ準備 → ローカル環境起動など
 
-※ Docker Desktop は導入必須です。導入後Docker Desktopを開いてください
+> [!WARNING]
+> Docker Desktop は導入必須です。導入後Docker Desktopを開いてください
 
 ```sh
 $ cd ~/workspace
@@ -40,3 +41,8 @@ $ make setup-local-env-files
 うまくいけば http://local.memories.com/ で開くことができます。
 
 ※ http://localhost:8081/ からアクセスも可能！
+
+
+## Other tools and extensions to add
+
+- [devdb (VSCode Extension)](https://github.com/damms005/devdb-vscode)

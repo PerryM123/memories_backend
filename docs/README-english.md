@@ -23,7 +23,8 @@ I am frontend engineer but I lack backend experience and have a hard time unders
 
 ### 2. Clone project & docker & make commands
 
-※ Docker Desktop is required. After installation, be sure to open it
+> [!WARNING]
+> Docker Desktop is required. After installation, be sure to open it
 
 ```sh
 $ cd ~/workspace
@@ -39,3 +40,7 @@ $ make setup-local-env-files
 You should be able to see the laravel application using the local url: http://local.memories.com/
 
 ※ Also accesible from: http://localhost:8081/
+
+## 他の便利なツール
+
+- [devdb (VSCode Extension)](https://github.com/damms005/devdb-vscode)

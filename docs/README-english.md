@@ -15,7 +15,7 @@ I am frontend engineer but I lack backend experience and have a hard time unders
 
 ### 1. Add local domain to hosts file
 
-※ In my case, my hosts file is located: /etc/hosts
+※ In my case, my hosts file is located: /etc/hosts (For anything like M1 or after, it is located: /private/etc/hosts)
 
 ```
 127.0.0.1 local.memories.com
@@ -41,6 +41,44 @@ You should be able to see the laravel application using the local url: http://lo
 
 ※ Also accesible from: http://localhost:8081/
 
-## 他の便利なツール
+# Common Pitfalls with Preparing Local Environment And How To Solve Them
 
+## After doing make setup-local-env-files, Failed to open stream: No such file or directory
+
+### Error Info:
+```
+$ make setup-local-env-files
+cp -R ./src/.env.example ./src/.env
+cp -R .devdbrc.example .devdbrc
+docker compose exec app php artisan key:generate
+PHP Warning:  require(/app/vendor/autoload.php): Failed to open stream: No such file or directory in /app/artisan on line 18
+
+Warning: require(/app/vendor/autoload.php): Failed to open stream: No such file or directory in /app/artisan on line 18
+PHP Fatal error:  Uncaught Error: Failed opening required '/app/vendor/autoload.php' (include_path='.:/usr/local/lib/php') in /app/artisan:18
+Stack trace:
+#0 {main}
+  thrown in /app/artisan on line 18
+
+Fatal error: Uncaught Error: Failed opening required '/app/vendor/autoload.php' (include_path='.:/usr/local/lib/php') in /app/artisan:18
+Stack trace:
+#0 {main}
+  thrown in /app/artisan on line 18
+exit status 255
+make: *** [setup-local-env-files] Error 255
+```
+
+### How to fix
+
+The commands below should fix it and you'll be able to open http://local.memories.com/
+
+```sh
+$ make app-bash
+root@584ffe96183c:/app# composer install
+root@584ffe96183c:/app# exit
+$ make setup-local-env-files
+```
+
+## Useful Tools and Extension
+
+### View the contents of the database in VSCode
 - [devdb (VSCode Extension)](https://github.com/damms005/devdb-vscode)

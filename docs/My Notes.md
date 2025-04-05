@@ -73,3 +73,17 @@ public function findById($id): ?User
 {}
 ```
 
+## Needed APIs
+- User Info
+  - get user info
+  - update user info
+  - add a user (by an admin???)
+- Posts
+  - add a post to a group
+  - get recent posts from a specific group by 10 posts per page
+- Subscribe to a group
+- Groups
+  - get your groups
+  - make a new group
+  - add a group to your profile 
+  - remove a group from your profile

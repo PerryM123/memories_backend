@@ -20,7 +20,6 @@ class PostInfoSeeder extends Seeder
                 'user_id' => 1,
                 'message_title' => 'Test Post1',
                 'message_text' => 'this is a message text1',
-                // TODO: change to UTC at some point
                 'post_date' => '2025/1/5',
                 'frame_type' => 'normal',
                 'is_edited' => false,
@@ -31,7 +30,6 @@ class PostInfoSeeder extends Seeder
                 'user_id' => 1,
                 'message_title' => 'Test Post2',
                 'message_text' => 'this is a message text2',
-                // TODO: change to UTC at some point
                 'post_date' => '2025/1/6',
                 'frame_type' => 'normal',
                 'is_edited' => true,
@@ -42,7 +40,6 @@ class PostInfoSeeder extends Seeder
                 'user_id' => 2,
                 'message_title' => 'Test Post3',
                 'message_text' => 'this is a message text3',
-                // TODO: change to UTC at some point
                 'post_date' => '2025/1/9',
                 'frame_type' => 'normal',
                 'is_edited' => false,

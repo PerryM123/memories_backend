@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class RankInfoControllerTest extends TestCase
 {
-    // TODO: 以下の@return voidコメントは必須？？？
     /**
      * A basic feature test example.
      *

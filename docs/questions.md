@@ -11,3 +11,5 @@
 ## Snakecase? Camelcase? functions are camelcase but not always???
 
 ## PSR-12??
+
+## Is PHPdocs important to you?

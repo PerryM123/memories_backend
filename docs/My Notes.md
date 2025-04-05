@@ -1,5 +1,6 @@
 ## TODO:
 - I have so many TODO comments... Let's solve and reduce them by a lot
+- Is it possible to add a prettier to php laravel files so that trailing commas won't be allowed????
 
 ## My Notes:
 - Can create users 
@@ -58,6 +59,13 @@ In the future:
 - I like this guy's DDD folder structure
   - https://medium.com/@leoonofre.oliversoft/developing-with-laravel-and-domain-driven-design-ddd-structuring-an-email-parsing-system-part-01-3a714b9f47c9
   - 日本語: https://aichi.blog/laravel-api-development-ddd-architecture/
+
+## Factoryを使いたい場合
+```php
+RankInfo::factory()
+    ->count(5)
+    ->create();
+```
 
 ### nullable return types
 ```php

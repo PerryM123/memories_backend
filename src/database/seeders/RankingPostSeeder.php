@@ -14,7 +14,6 @@ class RankingPostSeeder extends Seeder
      */
     public function run()
     {
-        // TODO: create is for flat and simple attributes
         RankingPost::create([
             'title' => 'The Best Books of 2024',
             'author' => 'Perry',

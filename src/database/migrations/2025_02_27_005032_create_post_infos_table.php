@@ -19,7 +19,6 @@ class CreatePostInfosTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('message_title');
             $table->string('message_text');
-            // TODO: Post date needs to be changed for UTC time
             $table->string('post_date');
             $table->string('frame_type');
             $table->boolean('is_edited');

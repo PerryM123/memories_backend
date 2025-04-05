@@ -6,6 +6,7 @@ use App\Models\RankInfo;
 use App\Models\RankingCategories;
 use Exception;
 use Illuminate\Http\Request;
+// TODO: Logの共通helper関数を作ろうかな
 use Illuminate\Support\Facades\Log;
 
 class RankInfoController extends Controller
@@ -49,6 +50,7 @@ class RankInfoController extends Controller
      */
     public function store(Request $request)
     {
+        // QUESTION: Should logs like this never be in the code?
         Log::info('[LOG] THIS IS STORE');
         $validatedData = $request->validate([
             'rank_title' => 'required|string|max:255',

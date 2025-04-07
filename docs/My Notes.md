@@ -76,6 +76,8 @@ public function findById($id): ?User
 ## TODO:
 - Add needed APIs
 - User authentication w/ redis
+  - session
+  - xsrf-token
 
 ## Needed APIs
 - [ ] User Info

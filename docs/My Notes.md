@@ -73,6 +73,10 @@ public function findById($id): ?User
 {}
 ```
 
+## TODO:
+- Add needed APIs
+- User authentication w/ redis
+
 ## Needed APIs
 - [ ] User Info
   [ ] - get user info (Need authentication)
@@ -99,3 +103,34 @@ public function findById($id): ?User
 - Logout Page?
 - List of Posts Page w/ side menu
 - List of Groups page??? Or just keep on Posts Page???
+
+# About Posts API
+
+## get 10 posts 
+- GET /api/post
+※ We will get user_id from user session
+
+## Add a new post to a group
+- POST /api/post
+- body:
+  - message_title
+  - message_text
+  - image
+  - group_id
+※ We will get user_id from user session
+
+## Edit a post
+- PUT /api/post
+- body:
+  - post_info_id
+  - group_id
+  - message_title
+  - message_text
+  - image
+※ We will get user_id from user session
+
+## Delete a post
+- DELETE /api/post
+- body:
+  - post_info_id
+※ We will get user_id from user session

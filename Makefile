@@ -6,6 +6,9 @@ setup-local-env-files:
 app-bash:
 	docker compose exec app bash
 
+redis-cli:
+	docker compose exec redis redis-cli
+
 db-bash:
 	docker compose exec db bash
 

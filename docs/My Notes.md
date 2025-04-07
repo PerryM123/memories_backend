@@ -74,16 +74,28 @@ public function findById($id): ?User
 ```
 
 ## Needed APIs
-- User Info
-  - get user info
-  - update user info
-  - add a user (by an admin???)
-- Posts
-  - add a post to a group
-  - get recent posts from a specific group by 10 posts per page
-- Subscribe to a group
-- Groups
-  - get your groups
-  - make a new group
-  - add a group to your profile 
-  - remove a group from your profile
+- [ ] User Info
+  [ ] - get user info (Need authentication)
+  [ ] - update your own user info (Need authentication)
+  [ ] - edit your own user info (Need authentication)
+    - [ ] user name
+    - [ ] profile pic
+  [ ] - add a user to the site (by an admin???)
+- [ ] Posts
+  [ ] - add a post to a group
+  [ ] - get recent posts from a specific group by 10 posts per page
+- [ ] Groups
+  [ ] - get your groups
+  [ ] - add a group to your profile 
+  [ ] - remove a group from your profile
+  [ ] - make an invite link to share with friends
+  [ ] - show list of users in group
+- [ ] Account info?
+  [ ] - login?
+  [ ] - logout?
+
+## Pages
+- Login Page
+- Logout Page?
+- List of Posts Page w/ side menu
+- List of Groups page??? Or just keep on Posts Page???

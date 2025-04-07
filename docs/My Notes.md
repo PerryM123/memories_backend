@@ -76,8 +76,12 @@ public function findById($id): ?User
 ## TODO:
 - Add needed APIs
 - User authentication w/ redis
-  - session
-  - xsrf-token
+  - Redis 
+    - setup with docker
+    - redis.conf
+  - Cookies to add
+    - session
+    - xsrf-token
 
 ## Needed APIs
 - [ ] User Info

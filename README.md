@@ -42,9 +42,11 @@ $ make setup-local-env-files
 
 ※ http://localhost:8081/ からアクセスも可能！
 
-### make setup-local-env-filesでFailed to open stream: No such file or directoryエラーが発生した場合
+# 環境構築に対するあるあるの問題と解決方法
 
-#### エラー内容
+## make setup-local-env-filesでFailed to open stream: No such file or directoryエラーが発生した場合
+
+### エラー内容:
 ```
 $ make setup-local-env-files
 cp -R ./src/.env.example ./src/.env
@@ -66,7 +68,7 @@ exit status 255
 make: *** [setup-local-env-files] Error 255
 ```
 
-#### 解決方法
+### 解決方法
 
 下記のコマンドを実行すると問題なく http://local.memories.com/ を開けます。
 
@@ -77,6 +79,7 @@ root@584ffe96183c:/app# exit
 $ make setup-local-env-files
 ```
 
-## Other tools and extensions to add
+## おすすめのツール・Extensionなど
 
+### VSCodeでデータベースの中身を見える化ツール
 - [devdb (VSCode Extension)](https://github.com/damms005/devdb-vscode)

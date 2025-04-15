@@ -14,10 +14,6 @@ class RankInfoSeeder extends Seeder
      */
     public function run()
     {
-        // TODO: Factoryを使いたい場合
-        // RankInfo::factory()
-        //     ->count(5)
-        //     ->create();
         RankInfo::insert([
             [
                 'ranking_categories_id' => '1',

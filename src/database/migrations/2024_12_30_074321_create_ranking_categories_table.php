@@ -15,7 +15,6 @@ class CreateRankingCategoriesTable extends Migration
     {
         Schema::create('ranking_categories', function (Blueprint $table) {
             $table->id('ranking_categories_id');
-            // TODO: ranking_categories_id should be a NUMBER???
             $table->string('rank_title');
         });
     }

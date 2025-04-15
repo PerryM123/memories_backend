@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class RankingCategories extends Model
 {
-    // TODO: 逆にtimestampsあった方がいい？？？
     public $timestamps = false;
     use HasFactory;
     protected $primaryKey = 'ranking_categories_id';

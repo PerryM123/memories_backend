@@ -19,12 +19,9 @@ class RankInfoController extends Controller
     public function index(Request $request, string $rank_id)
     {
         Log::info('[LOG] THIS IS INDEX');
-        // TODO: Instead of doing individual validation, should I use request validation?
         if (!is_numeric($rank_id)) {
             return response()->json(['error_info' => 'rank_id must be a number'], 400);
         }
-        // TODO: maybe it's better to use a constant instead of using a string for the column names
-        // TODO: maybe it's better to use get() instead of first()?
         $ranking_categories = RankingCategories::where('ranking_categories_id', $rank_id)->first();
 
         if (!$ranking_categories) {
@@ -36,7 +33,6 @@ class RankInfoController extends Controller
         if (!$rank_info) {
             return response()->json(['error_info' => 'no rank info found'], 404);
         }
-        // TODO: もっと適切なログ出力方法は募集中
         Log::info('rank_info data:', ['rank_info' => $rank_info]);
         $ranking_categories['rank_info'] = $rank_info;
         return response()->json($ranking_categories);
@@ -60,8 +56,6 @@ class RankInfoController extends Controller
             'rank_info.*.image_url' => 'required|url',
         ]);
 
-        // TODO: Learn how to do request validation 
-        // $book = RankInfo::create($validatedData);
         $body_test_perry = $request->body;
 
 
@@ -70,8 +64,6 @@ class RankInfoController extends Controller
         Log::info('rank_info store data:', ['validatedData' => $validatedData]);
         Log::info('rank_info store data:', ['validatedData' => $validatedData]);
         try {
-            // TODO: 
-            // $rankInfo = RankInfo::create($validatedData);
             $ranking_categories = RankingCategories::create(['rank_title' => $validatedData['rank_title']]);
 
             return response()->json($ranking_categories, 201);

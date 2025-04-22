@@ -23,3 +23,6 @@ down:
 
 app-migrate-refresh-seed:
 	docker compose exec app php artisan migrate:refresh --seed
+
+laravel-log:
+	tail -f src/storage/logs/laravel.log

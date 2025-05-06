@@ -40,6 +40,7 @@ class ReceiptInfoController extends Controller
             'image' => 'required|file|image|max:5120', // max 5MB
         ]);
 
+        // TODO: Change add this into service. Example: $ReceiptInfoService->storeNewReceipt();
         $file = $request->file('image');
         $filename = uniqid() . '.' . $file->getClientOriginalExtension();
         Log::info('[LOG] ReceiptInfoController: before');
@@ -51,11 +52,34 @@ class ReceiptInfoController extends Controller
             'filename' => $filename,
             'path' => $path,
         ]);
-        //
+        // TODO: This $receipt_info is dummy data. Open AI API will be set here
+        $receipt_info = [
+            "items" => [
+                [ "name" => "ハーゲンミニCロウチャクリキーウカ", "price_total" => 218 ],
+                [ "name" => "オリジナルスフラッドオレンジ", "price_total" => 204 ],
+                [ "name" => "オカメ スコイサットS-903", "price_total" => 264 ],
+                [ "name" => "アタックウオシEXヘヤカカ850g", "price_total" => 308 ],
+                [ "name" => "コウサンウオトンジヤ玉150×3", "price_total" => 78 ],
+                [ "name" => "セブンスターリサンゴールド", "price_total" => 499 ],
+                [ "name" => "ワイドハイターEXパワー820ml", "price_total" => 328 ],
+                [ "name" => "サラヤ テイユコット100ムコち56", "price_total" => 280 ],
+                [ "name" => "バナナ", "price_total" => 256 ],
+                [ "name" => "ハウスバイング35g", "price_total" => 100 ],
+                [ "name" => "トマト コツコ", "price_total" => 398 ],
+                [ "name" => "タンノンビオカセイタクブドウ", "price_total" => 326 ],
+                [ "name" => "タンノンビオ シチリアレモン 4コ", "price_total" => 163 ],
+                [ "name" => "コイワイヨーグルトホンボウ400g", "price_total" => 199 ],
+                [ "name" => "ミヤマ イチオシムキチ 200g", "price_total" => 153 ],
+                [ "name" => "コウサンウオカトリムネニク", "price_total" => 596 ],
+            ],
+            "receipt_total" => 4626
+        ];
+
         return response()->json([
             'message' => 'Image uploaded successfully',
             'path' => $path,
             'url' => Storage::disk('s3')->url($path),
+            'receipt_info' => $receipt_info
         ]);
     }
 

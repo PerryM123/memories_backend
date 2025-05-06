@@ -38,5 +38,21 @@ services:
       - "./data/redis:/data"
       - "./docker/redis/redis.conf:/etc/redis.conf"
     command: ["redis-server", "/etc/redis.conf"] # TODO: 確認必須
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      # API access
+      - "9000:9000"
+      # Admin UI
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
 volumes:
   mysql-volume:
+  minio_data:

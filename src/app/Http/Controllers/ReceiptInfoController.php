@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Domain\ReceiptInfo\Services\ReceiptInfoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ReceiptInfoController extends Controller
@@ -33,9 +34,29 @@ class ReceiptInfoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function storeReceiptInfo(Request $request)
     {
+        $request->validate([
+            'image' => 'required|file|image|max:5120', // max 5MB
+        ]);
+
+        $file = $request->file('image');
+        $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+        Log::info('[LOG] ReceiptInfoController: before');
+        $path = Storage::disk('s3')->putFileAs('uploads/images', $file, $filename);
+        Log::info('[LOG] ReceiptInfoController: after');
+        Log::info('[LOG] ReceiptInfoController: storeReceiptInfo: ', [
+            'request' => $request,
+            'file' => $file,
+            'filename' => $filename,
+            'path' => $path,
+        ]);
         //
+        return response()->json([
+            'message' => 'Image uploaded successfully',
+            'path' => $path,
+            'url' => Storage::disk('s3')->url($path),
+        ]);
     }
 
     /**

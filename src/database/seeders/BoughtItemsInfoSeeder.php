@@ -48,7 +48,7 @@ class BoughtItemsInfoSeeder extends Seeder
                 'receipt_id' => 2,
                 'name' => 'キムチ',
                 'price' => 156,
-                'payer_name' => 'perry'
+                'payer_name' => 'both'
             ],
             [
                 'bought_item_id' => 6,
@@ -69,14 +69,14 @@ class BoughtItemsInfoSeeder extends Seeder
                 'receipt_id' => 3,
                 'name' => 'カレー弁当',
                 'price' => 399,
-                'payer_name' => 'hannah'
+                'payer_name' => 'both'
             ],
             [
                 'bought_item_id' => 9,
                 'receipt_id' => 3,
                 'name' => 'アイス',
                 'price' => 121,
-                'payer_name' => 'perry'
+                'payer_name' => 'both'
             ]
         ]);
     }

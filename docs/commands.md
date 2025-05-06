@@ -83,5 +83,14 @@ show columns from TABLE_NAME_HERE;
 select * from TABLE_NAME_HERE;
 ```
 
+# Redis
+
+## check all data in redis session 
+
+```sh
+keys *
+```
+
 # Other
 - Local environment: http://local.memories.com/ or http://localhost:8081/
+

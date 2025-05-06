@@ -1,0 +1,93 @@
+[
+  {
+    // QUESTION: are JSON properties usually snake case? 
+    "id": 1,
+    "receipt_title": "OKスーパー 2025/4/5（土）",
+    "receipt_image_url": "https://some-url-here.com/1.jpg",
+    "user_who_paid": "Perry",
+    "total_info": {
+      "total_amount": 2304,
+      "my_bought_items": [
+        {
+          "name": "ビスコフ",
+          "price": 252
+        },
+        {
+          "name": "レタス",
+          "price": 152
+        },
+        {
+          "name": "牛乳",
+          "price": 159
+        }
+      ],
+      "hannah_bought_items": [
+        {
+          "name": "豆腐",
+          "price": 96
+        },
+        {
+          "name": "キムチ",
+          "price": 156
+        },
+        {
+          "name": "大きいヨーグルト",
+          "price": 159
+        }
+      ],
+      "both_bought_items": [
+        {
+          "name": "水",
+          "price": 97
+        },
+        {
+          "name": "カレー弁当",
+          "price": 399
+        },
+        {
+          "name": "アイス",
+          "price": 121
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "receipt_title": "OKスーパー 2025/4/2（水）",
+    "total_info": {
+      "total_amount": 4129,
+      "my_bought_items": [
+        {
+          "name": "グミ",
+          "price": 91
+        },
+        {
+          "name": "スポーン",
+          "price": 65
+        },
+        {
+          "name": "フォーク",
+          "price": 60
+        }
+      ],
+      "hannah_bought_items": [
+        {
+          "name": "猫の餌",
+          "price": 3001
+        },
+        {
+          "name": "大きいヨーグルト",
+          "price": 990
+        }
+      ],
+      "both_bought_items": [
+        {
+          "name": "ジュース",
+          "price": 241
+        }
+      ]
+    },
+    "receipt_image_url": "https://some-url-here.com/2.jpg",
+    "user_who_paid": "Hana"
+  }
+]

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Domain\UserInfo\Services\UserInfoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class UserInfoController extends Controller
@@ -35,8 +37,9 @@ class UserInfoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($userId, UserInfoService $UserInfoService)
+    public function show($userId, UserInfoService $UserInfoService, Request $request)
     {
+        Log::info('rank_info data:', ['request' => $request]);
         $validator = Validator::make(['userId' => $userId], [
             'userId' => 'required|integer|min:1'
         ]);

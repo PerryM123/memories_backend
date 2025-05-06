@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
             RankingCategoriesSeeder::class,
             RankInfoSeeder::class,
             PostInfoSeeder::class,
-            UserInfoSeeder::class
+            UserInfoSeeder::class,
+            ReceiptInfoSeeder::class,
+            BoughtItemsInfoSeeder::class,
         ]);
     }
 }

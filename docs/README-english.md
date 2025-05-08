@@ -13,12 +13,15 @@ I am frontend engineer but I lack backend experience and have a hard time unders
 
 ## Setup Local Environment
 
-### 1. Add local domain to hosts file
+### 1. Add local domains to hosts file
 
 ※ In my case, my hosts file is located: /etc/hosts (For anything like M1 or after, it is located: /private/etc/hosts)
 
-```
+```sh
+# laravel app
 127.0.0.1 local.memories.com
+# local s3 storage
+127.0.0.1 minio
 ```
 
 ### 2. Clone project & docker & make commands

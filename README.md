@@ -18,8 +18,11 @@
 
 ※ 僕のパソコンだとhostsファイルは `/etc/hosts` (M1以降の場合、 `/private/etc/hosts`)
 
-```
+```sh
+# laravel app
 127.0.0.1 local.memories.com
+# local s3 storage
+127.0.0.1 minio
 ```
 
 ### 2. Clone project → コンテナ準備 → ローカル環境起動など

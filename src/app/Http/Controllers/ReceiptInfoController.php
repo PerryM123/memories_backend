@@ -20,17 +20,11 @@ class ReceiptInfoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
-        Log::info('[LOG] ReceiptInfoController', ['ReceiptInfoService' => $this->ReceiptInfoService]);
-        /**
-         * Idea:
-         * 1. Only get the items in counts of 10 (page 2 = 11 - 20, page 3 = 21 - 30)
-         */
-        $receiptInfo = $this->ReceiptInfoService->getAllReceipts();
-        Log::info('[LOG] ReceiptInfoController', ['receiptInfo' => $receiptInfo]);
-        return response()->json('hello', 200);
+        $page = $request->query('page', 1);
+        $receiptInfo = $this->ReceiptInfoService->getPaginatedReceipts($page);
+        return response()->json($receiptInfo);
     }
 
     /**

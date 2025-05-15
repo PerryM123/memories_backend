@@ -3,6 +3,7 @@
 namespace App\Domain\ReceiptInfo\Services;
 
 use App\Domain\ReceiptInfo\Contracts\ReceiptInfoRepositoryInterface;
+use App\Domain\ReceiptInfo\DTOs\PaginatedReceiptsDTO;
 use App\Domain\ReceiptInfo\Entities\Receipt;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -25,6 +26,11 @@ class ReceiptInfoService
     public function getAllReceipts(): Collection
     {
         return $this->ReceiptInfoRepository->findAllReceipts();
+    }
+    public function getPaginatedReceipts(int $page): PaginatedReceiptsDTO
+    {
+        Log::info('Services: getPaginatedReceipts');
+        return $this->ReceiptInfoRepository->getPaginatedReceipts($page);
     }
 
     /**

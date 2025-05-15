@@ -2,6 +2,7 @@
 
 namespace App\Domain\ReceiptInfo\Contracts;
 
+use App\Domain\ReceiptInfo\DTOs\PaginatedReceiptsDTO;
 use App\Domain\ReceiptInfo\Entities\Receipt;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -10,6 +11,7 @@ interface ReceiptInfoRepositoryInterface
 {
     public function findById($id): ?Receipt;
     public function findAllReceipts(): Collection;
+    public function getPaginatedReceipts(int $page): PaginatedReceiptsDTO;
     public function storeNewReceiptInfoToDatabse(
         string $title,
         string $userWhoPaid,

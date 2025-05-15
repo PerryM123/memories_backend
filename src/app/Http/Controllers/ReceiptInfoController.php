@@ -40,6 +40,8 @@ class ReceiptInfoController extends Controller
             'image' => 'required|file|image|max:5120', // max 5MB
             'title' => 'required|string|max:255',
             'user_who_paid' => 'required|string|max:255',
+            'person_1_amount' => 'required|integer|min:1',
+            'person_2_amount' => 'required|integer|min:1',
         ]);
         if ($validator->fails()) {
             return response()->json(['error_info' => 'validation error'], 400);
@@ -56,6 +58,8 @@ class ReceiptInfoController extends Controller
             $userWhoPaid, 
             // TODO: Why is receipt_total not inferable and has no intellesense?
             $receiptInfo['receipt_total'], 
+            $validatedData['person_1_amount'], 
+            $validatedData['person_2_amount'], 
             $request->file('image')
         );
         return response()->json([

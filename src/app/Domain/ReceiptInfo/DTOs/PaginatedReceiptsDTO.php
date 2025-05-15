@@ -7,13 +7,13 @@ use Illuminate\Support\Collection;
 class PaginatedReceiptsDTO implements \JsonSerializable
 {
     public function __construct(
-        private Collection $data,
+        private Collection $receipt_data,
         private int $total
     ) {}
     public function jsonSerialize(): array
     {
         return [
-            'data' => $this->data,
+            'receipt_data' => $this->receipt_data,
             'total' => $this->total,
         ];
     }

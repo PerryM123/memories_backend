@@ -22,7 +22,9 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             $receipt->title,
             $receipt->image_url,
             $receipt->user_who_paid,
-            $receipt->total_amount
+            $receipt->total_amount,
+            $receipt->person_1_amount,
+            $receipt->person_2_amount
         );
     }
     /**
@@ -44,7 +46,7 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             ->get();
         Log::info('repo: getPaginatedReceipts: receiptInfoCollection', ['receiptInfoCollection' => $receiptInfoCollection]);
         return new PaginatedReceiptsDTO(
-            data: $receiptInfoCollection,
+            receipt_data: $receiptInfoCollection,
             total: ReceiptInfo::count()
         );
     }
@@ -52,6 +54,8 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         string $title,
         string $userWhoPaid,
         int $totalAmount,
+        int $person_1_amount,
+        int $person_2_amount,
         UploadedFile $imageFile
     ): void
     {
@@ -63,7 +67,9 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             'title' => $title,
             'image_url' => $imageUrl,
             'user_who_paid' => $userWhoPaid,
-            'total_amount' => $totalAmount
+            'total_amount' => $totalAmount,
+            'person_1_amount' => $person_1_amount,
+            'person_2_amount' => $person_2_amount,
             ]);
             Log::info('Receipt Info was successfully uploaded to s3', ['$receipt_info' => $receipt_info]);
         } catch (\Exception $e) {

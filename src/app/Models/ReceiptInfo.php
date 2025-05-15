@@ -15,5 +15,7 @@ class ReceiptInfo extends Model
         'image_url',
         'user_who_paid',
         'total_amount',
+        'person_1_amount',
+        'person_2_amount'
     ];
 }

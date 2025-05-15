@@ -16,6 +16,8 @@ interface ReceiptInfoRepositoryInterface
         string $title,
         string $userWhoPaid,
         int $totalAmount,
+        int $person_1_amount,
+        int $person_2_amount,
         UploadedFile $imageFile
     ): void;
     // TODO: Need to figure out the type for this function which will call the OpenAI API

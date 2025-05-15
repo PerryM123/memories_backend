@@ -19,6 +19,8 @@ class CreateReceiptInfosTable extends Migration
             $table->string('image_url');
             $table->string('user_who_paid');
             $table->unsignedBigInteger('total_amount');
+            $table->unsignedBigInteger('person_1_amount');
+            $table->unsignedBigInteger('person_2_amount');
             $table->timestamps();
         });
     }

@@ -41,9 +41,19 @@ class ReceiptInfoService
         string $title,
         string $userWhoPaid,
         int $totalAmount,
+        int $personOneAmount,
+        int $personTwoAmount,
         UploadedFile $imageFile
     ) {
-        $this->ReceiptInfoRepository->storeNewReceiptInfoToDatabse($title, $userWhoPaid, $totalAmount, $imageFile);
+        Log::info('ReceiptInfoService: storeNewReceipt:', ['image' => $imageFile]);
+        $this->ReceiptInfoRepository->storeNewReceiptInfoToDatabse(
+            $title, 
+            $userWhoPaid, 
+            $totalAmount, 
+            $personOneAmount, 
+            $personTwoAmount,
+            $imageFile
+        );
     }
 
     /**
@@ -52,7 +62,7 @@ class ReceiptInfoService
     // TODO: 実装必須
     // TODO: Need a proper return type for this function...
     public function analyzeReceiptImage(UploadedFile $imageFile) {
-        Log::info('analyzeReceiptImage:', ['image' => $imageFile]);
+        Log::info('ReceiptInfoService: analyzeReceiptImage:', ['image' => $imageFile]);
         return $this->ReceiptInfoRepository->getReceiptInfoFromReceiptImage($imageFile);
     }
 }

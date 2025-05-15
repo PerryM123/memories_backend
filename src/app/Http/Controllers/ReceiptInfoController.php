@@ -64,8 +64,30 @@ class ReceiptInfoController extends Controller
         );
         return response()->json([
             'message' => 'Receipt Info Saved Successfully',
-            'receipt_info' => $receiptInfo
         ], 201);
+    }
+
+    /**
+     * TODO: comment必須
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function analyzeReceiptImage(Request $request)
+    {
+        Log::info('storeReceiptInfo function');
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|file|image|max:5120', // max 5MB
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error_info' => 'validation error'], 400);
+        }
+        Log::info('storeReceiptInfo check validator: ', [ 'validator' => $validator]);
+        $receiptInfo = $this->ReceiptInfoService->analyzeReceiptImage($request->file('image'));
+        return response()->json([
+            'message' => 'Receipt Info Analyzed Successfully',
+            'receipt_info' => $receiptInfo
+        ], 200);
     }
 
     /**

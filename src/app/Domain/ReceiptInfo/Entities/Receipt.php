@@ -11,6 +11,7 @@ class Receipt implements \JsonSerializable
     private int $total_amount;
     private int $person_1_amount;
     private int $person_2_amount;
+    private array $bought_items;
 
     // QUESTION: Should this be an object to be passed in so that we can type/dependency inject it? Or no?
     public function __construct(
@@ -20,7 +21,8 @@ class Receipt implements \JsonSerializable
         string $user_who_paid,
         string $total_amount,
         string $person_1_amount,
-        string $person_2_amount
+        string $person_2_amount,
+        array $bought_items = []
     ) {
         $this->receipt_id = $receipt_id;
         $this->title = $title;
@@ -29,6 +31,7 @@ class Receipt implements \JsonSerializable
         $this->total_amount = $total_amount;
         $this->person_1_amount = $person_1_amount;
         $this->person_2_amount = $person_2_amount;
+        $this->bought_items = $bought_items;
     }
     public function getReceiptId(): int
     {
@@ -58,6 +61,10 @@ class Receipt implements \JsonSerializable
     {
         return $this->person_2_amount;
     }
+    public function getBoughtItems(): array
+    {
+        return $this->bought_items;
+    }
     public function jsonSerialize(): array
     {
         return [
@@ -67,7 +74,8 @@ class Receipt implements \JsonSerializable
             'user_who_paid' => $this->user_who_paid,
             'total_amount' => $this->total_amount,
             'person_1_amount' => $this->person_1_amount,
-            'person_2_amount' => $this->person_2_amount
+            'person_2_amount' => $this->person_2_amount,
+            'bought_items' => $this->bought_items
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BoughtItemsInfo extends Model
 {
@@ -16,4 +17,8 @@ class BoughtItemsInfo extends Model
         'price',
         'payer_name'
     ];
+    public function receiptInfo(): BelongsTo
+    {
+        return $this->belongsTo(ReceiptInfo::class, 'receipt_id', 'receipt_id');
+    }
 }

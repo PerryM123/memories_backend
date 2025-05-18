@@ -36,6 +36,17 @@ class ReceiptInfoSeeder extends Seeder
                 'person_2_amount' => 1929,
                 'created_at' => '2025-05-13 02:49:03',
                 'updated_at' => '2025-05-13 02:49:03'
+            ],
+            [
+                'receipt_id' => 3,
+                'title' => 'OKスーパー 2025/4/1（水）',
+                'image_url' => 'https://some-url-here.com/3.jpg',
+                'user_who_paid' => 'hannah',
+                'total_amount' => 7777,
+                'person_1_amount' => 2000,
+                'person_2_amount' => 5777,
+                'created_at' => '2025-05-17 02:49:03',
+                'updated_at' => '2025-05-17 02:49:03'
             ]
         ]);
     }

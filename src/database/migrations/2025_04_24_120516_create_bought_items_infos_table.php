@@ -20,6 +20,11 @@ class CreateBoughtItemsInfosTable extends Migration
             $table->unsignedBigInteger('price');
             $table->string('payer_name');
             $table->timestamps();
+
+            $table->foreign('receipt_id')
+                ->references('receipt_id')
+                ->on('receipt_infos')
+                ->onDelete('cascade');
         });
     }
 

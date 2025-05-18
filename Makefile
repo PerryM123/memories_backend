@@ -26,3 +26,6 @@ app-migrate-refresh-seed:
 
 laravel-log:
 	tail -f src/storage/logs/laravel.log
+
+mysql:
+	docker compose exec db mysql -u root -p

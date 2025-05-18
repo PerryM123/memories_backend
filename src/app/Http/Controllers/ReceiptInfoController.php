@@ -36,15 +36,31 @@ class ReceiptInfoController extends Controller
     public function storeReceiptInfo(Request $request)
     {
         Log::info('storeReceiptInfo function');
-        $validator = Validator::make($request->all(), [
+        
+        // Decode bought_items JSON string from the frontend
+        $requestData = $request->all();
+        if (isset($requestData['bought_items']) && is_string($requestData['bought_items'])) {
+            $requestData['bought_items'] = json_decode($requestData['bought_items'], true);
+        }
+        
+        $validator = Validator::make($requestData, [
             'image' => 'required|file|image|max:5120', // max 5MB
             'title' => 'required|string|max:255',
             'user_who_paid' => 'required|string|max:255',
             'person_1_amount' => 'required|integer|min:1',
             'person_2_amount' => 'required|integer|min:1',
+            'bought_items' => 'required|array',
+            'bought_items.*.name' => 'required|string|max:255',
+            'bought_items.*.price_total' => 'required|integer|min:1',
+            // TODO: Need to add validation that states who_paid cannot be an empty string... 
+            'bought_items.*.who_paid' => 'nullable|string|max:255',
+            'total_amount' => 'required|integer|min:1',
         ]);
+        
         if ($validator->fails()) {
-            return response()->json(['error_info' => 'validation error'], 400);
+            return response()->json([
+                'error_info' => $validator->errors()
+            ], 400);
         }
         Log::info('storeReceiptInfo check validator: ', [ 'validator' => $validator]);
         $receiptInfo = $this->ReceiptInfoService->analyzeReceiptImage($request->file('image'));
@@ -60,6 +76,8 @@ class ReceiptInfoController extends Controller
             $receiptInfo['receipt_total'], 
             $validatedData['person_1_amount'], 
             $validatedData['person_2_amount'], 
+            $validatedData['bought_items'], 
+            $validatedData['total_amount'], 
             $request->file('image')
         );
         return response()->json([

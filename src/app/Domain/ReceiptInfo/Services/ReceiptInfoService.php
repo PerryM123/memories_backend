@@ -43,6 +43,8 @@ class ReceiptInfoService
         int $totalAmount,
         int $personOneAmount,
         int $personTwoAmount,
+        array $bought_items,
+        int $total_amount,
         UploadedFile $imageFile
     ) {
         Log::info('ReceiptInfoService: storeNewReceipt:', ['image' => $imageFile]);
@@ -52,6 +54,8 @@ class ReceiptInfoService
             $totalAmount, 
             $personOneAmount, 
             $personTwoAmount,
+            $bought_items,
+            $total_amount,
             $imageFile
         );
     }

@@ -5,6 +5,7 @@ namespace App\Domain\ReceiptInfo\Repositories;
 use App\Domain\ReceiptInfo\Contracts\ReceiptInfoRepositoryInterface;
 use App\Domain\ReceiptInfo\DTOs\PaginatedReceiptsDTO;
 use App\Domain\ReceiptInfo\Entities\Receipt;
+use App\Models\BoughtItemsInfo;
 use App\Models\ReceiptInfo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -56,6 +57,8 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         int $totalAmount,
         int $person_1_amount,
         int $person_2_amount,
+        array $bought_items,
+        int $total_amount,
         UploadedFile $imageFile
     ): void
     {
@@ -72,8 +75,37 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             'person_2_amount' => $person_2_amount,
             ]);
             Log::info('Receipt Info was successfully uploaded to s3', ['$receipt_info' => $receipt_info]);
+
+            // TODO: Fix timezone of the project
+            $timestamp_now = now();
+            $boughtItemsData = array_map(function($item) use ($receipt_info, $timestamp_now) {
+                Log::info('whats in the box', [
+                    'item' => $item
+                ]);    
+                return [
+                    'receipt_id' => $receipt_info->receipt_id,
+                    'name' => $item['name'],
+                    'price' => $item['price_total'],
+                    'payer_name' => $item['who_paid'],
+                    'created_at' => $timestamp_now,
+                    'updated_at' => $timestamp_now
+                ];
+            }, $bought_items);
+
+            
+            Log::info('Before insert', [
+                'boughtItemsData' => $boughtItemsData
+            ]);
+
+            BoughtItemsInfo::insert($boughtItemsData);
+
+            Log::info('Receipt and bought items were successfully saved', [
+                'receipt_id' => $receipt_info->receipt_id,
+                'bought_items_count' => count($boughtItemsData)
+            ]);
+
         } catch (\Exception $e) {
-            $errorMessage = 'Failed to upload receipt info to s3';
+            $errorMessage = 'Failed to save receipt and bought items';
             Log::error($errorMessage, [
                 'error' => $e->getMessage(),
                 'file' => $imageFile->getClientOriginalName()

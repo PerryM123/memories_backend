@@ -63,16 +63,18 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
     ): void
     {
         try {
+            /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
+            $s3 = Storage::disk('s3');
             $filename = uniqid() . '.' . $imageFile->getClientOriginalExtension();
-            $path = Storage::disk('s3')->putFileAs('uploads/images', $imageFile, $filename);
-            $imageUrl = Storage::disk('s3')->url($path);
+            $path = $s3->putFileAs('uploads/images', $imageFile, $filename);
+            $imageUrl = $s3->url($path);                        
             $receipt_info = ReceiptInfo::create([
-            'title' => $title,
-            'image_url' => $imageUrl,
-            'user_who_paid' => $userWhoPaid,
-            'total_amount' => $totalAmount,
-            'person_1_amount' => $person_1_amount,
-            'person_2_amount' => $person_2_amount,
+                'title' => $title,
+                'image_url' => $imageUrl,
+                'user_who_paid' => $userWhoPaid,
+                'total_amount' => $totalAmount,
+                'person_1_amount' => $person_1_amount,
+                'person_2_amount' => $person_2_amount,
             ]);
             Log::info('Receipt Info was successfully uploaded to s3', ['$receipt_info' => $receipt_info]);
 
@@ -114,7 +116,7 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         }
     }
     // Question: Type needed for parameter. Would it be better if this were to return a DTO instead of a plain array?
-    public function getReceiptInfoFromReceiptImage(UploadedFile $imageFile)
+    public function getInfoFromReceiptImage(UploadedFile $imageFile)
     {
         Log::info('getReceiptInfoFromReceiptImage:', ['image' => $imageFile]);
         // TODO: This $receipt_info is dummy data. Open AI API will be set here

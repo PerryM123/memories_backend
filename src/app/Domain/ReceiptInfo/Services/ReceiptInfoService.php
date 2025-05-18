@@ -65,8 +65,8 @@ class ReceiptInfoService
      */
     // TODO: 実装必須
     // TODO: Need a proper return type for this function...
-    public function analyzeReceiptImage(UploadedFile $imageFile) {
+    public function getInfoFromReceiptImage(UploadedFile $imageFile) {
         Log::info('ReceiptInfoService: analyzeReceiptImage:', ['image' => $imageFile]);
-        return $this->ReceiptInfoRepository->getReceiptInfoFromReceiptImage($imageFile);
+        return $this->ReceiptInfoRepository->getInfoFromReceiptImage($imageFile);
     }
 }

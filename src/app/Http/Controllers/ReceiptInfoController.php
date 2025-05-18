@@ -62,22 +62,17 @@ class ReceiptInfoController extends Controller
                 'error_info' => $validator->errors()
             ], 400);
         }
-        Log::info('storeReceiptInfo check validator: ', [ 'validator' => $validator]);
-        $receiptInfo = $this->ReceiptInfoService->analyzeReceiptImage($request->file('image'));
-        Log::info('storeReceiptInfo after analyzeReceiptImage: ', $receiptInfo);
-
         $validatedData = $validator->validated();
         $title = $validatedData['title'];
         $userWhoPaid = $validatedData['user_who_paid'];
         $this->ReceiptInfoService->storeNewReceipt(
             $title, 
             $userWhoPaid, 
-            // TODO: Why is receipt_total not inferable and has no intellesense?
-            $receiptInfo['receipt_total'], 
-            $validatedData['person_1_amount'], 
-            $validatedData['person_2_amount'], 
-            $validatedData['bought_items'], 
-            $validatedData['total_amount'], 
+            $validatedData['total_amount'],
+            $validatedData['person_1_amount'],
+            $validatedData['person_2_amount'],
+            $validatedData['bought_items'],
+            $validatedData['total_amount'],
             $request->file('image')
         );
         return response()->json([
@@ -101,7 +96,7 @@ class ReceiptInfoController extends Controller
             return response()->json(['error_info' => 'validation error'], 400);
         }
         Log::info('storeReceiptInfo check validator: ', [ 'validator' => $validator]);
-        $receiptInfo = $this->ReceiptInfoService->analyzeReceiptImage($request->file('image'));
+        $receiptInfo = $this->ReceiptInfoService->getInfoFromReceiptImage($request->file('image'));
         return response()->json([
             'message' => 'Receipt Info Analyzed Successfully',
             'receipt_info' => $receiptInfo

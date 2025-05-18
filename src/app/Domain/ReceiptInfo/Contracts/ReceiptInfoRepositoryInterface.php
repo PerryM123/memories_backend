@@ -24,5 +24,5 @@ interface ReceiptInfoRepositoryInterface
     ): void;
     // TODO: Need to figure out the type for this function which will call the OpenAI API
     // TODO: Type needed for parameter
-    public function getReceiptInfoFromReceiptImage(UploadedFile $imageFile);
+    public function getInfoFromReceiptImage(UploadedFile $imageFile);
 }

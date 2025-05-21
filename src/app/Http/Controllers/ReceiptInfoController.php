@@ -103,6 +103,36 @@ class ReceiptInfoController extends Controller
         ], 200);
     }
 
+
+    /**
+     * TODO: comment必須
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getReceiptDetails(int $receipt_id, Request $request)
+    {
+        Log::info('getReceiptById function: receipt_id: ', [ '$receipt_id' => $receipt_id]);
+        $validator = Validator::make(['receipt_id' => $receipt_id], [
+            'receipt_id' => 'required|integer|min:1'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error_info' => 'validation error'], 400);
+        }
+        $validatedData = $validator->validated();
+        Log::info('storeReceiptInfo check validator: ', [ 'validator' => $validator]);
+        $receiptInfo = $this->ReceiptInfoService->getReceiptById($validatedData['receipt_id']);
+        if (!$receiptInfo) {
+            return response()->json([
+                'error_message' => 'receipt_info does not exist'
+            ], 404);
+        }
+        Log::info('recetipsoidhasdhsodiu: ', [ 'receiptInfo' => $receiptInfo]);
+        return response()->json([
+            'receipt_info' => $receiptInfo
+        ], 200);
+    }
+
     /**
      * Display the specified resource.
      *

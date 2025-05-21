@@ -2,6 +2,7 @@
 
 namespace App\Domain\ReceiptInfo\Repositories;
 
+use App\Domain\BoughtItemInfo\Entities\BoughtItem;
 use App\Domain\ReceiptInfo\Contracts\ReceiptInfoRepositoryInterface;
 use App\Domain\ReceiptInfo\DTOs\PaginatedReceiptsDTO;
 use App\Domain\ReceiptInfo\Entities\Receipt;
@@ -16,17 +17,37 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
 {
     public function findById($id): ?Receipt
     {
-        $receipt = ReceiptInfo::find($id);
+        Log::info('findById: ', [ 'id' => $id]);
+        $receipt_id = $id;
+        Log::info('findById: ', [ 'receipt_id' => $receipt_id]);
+        $receipt = ReceiptInfo::find($receipt_id);
         if (!$receipt) return null;
-        return new Receipt(
+        $boughtItems = BoughtItemsInfo::where('receipt_id', $id)->get();
+        Log::info('boughtItems: ', [ 'boughtItems' => $boughtItems]);
+        
+        $boughtItemsCollection = $boughtItems->map(function ($item) {
+            return new BoughtItem(
+                $item->bought_item_id,
+                $item->receipt_id,
+                $item->name,
+                $item->price,
+                $item->payer_name
+            );
+        });
+        Log::info('boughtItemsCollection: ', [ 'boughtItemsCollection' => $boughtItemsCollection]);
+
+        $the_receipt = new Receipt(
             $receipt->receipt_id,
             $receipt->title,
             $receipt->image_url,
             $receipt->user_who_paid,
             $receipt->total_amount,
             $receipt->person_1_amount,
-            $receipt->person_2_amount
+            $receipt->person_2_amount,
+            $boughtItemsCollection
         );
+        Log::info('the_receipt: ', [ 'the_receipt' => $the_receipt]);
+        return $the_receipt;
     }
     /**
      * @return Collection<int, ReceiptInfo>

@@ -33,6 +33,7 @@ Route::get('/post-info', [PostInfoController::class, 'index']);
 // QUESTION: If it is a get request API, should it be index instead of show?
 Route::get('/user/{id}', [UserInfoController::class, 'show']);
 Route::get('/receipt-info', [ReceiptInfoController::class, 'index']);
+Route::get('/receipt-info/{receipt_id}', [ReceiptInfoController::class, 'getReceiptDetails']);
 Route::post('/receipt-info/analyze', [ReceiptInfoController::class, 'analyzeReceiptImage']);
 Route::post('/receipt-info', [ReceiptInfoController::class, 'storeReceiptInfo']);
 Route::post('/login', [AuthController::class, 'login']);

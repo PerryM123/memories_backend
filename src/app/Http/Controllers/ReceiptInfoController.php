@@ -97,12 +97,12 @@ class ReceiptInfoController extends Controller
         }
         Log::info('storeReceiptInfo check validator: ', [ 'validator' => $validator]);
         $receiptInfo = $this->ReceiptInfoService->getInfoFromReceiptImage($request->file('image'));
+        // TODO: Make it so that we can pass the $receiptInfo as is instead of with a message
         return response()->json([
             'message' => 'Receipt Info Analyzed Successfully',
             'receipt_info' => $receiptInfo
         ], 200);
     }
-
 
     /**
      * TODO: comment必須
@@ -128,9 +128,9 @@ class ReceiptInfoController extends Controller
             ], 404);
         }
         Log::info('recetipsoidhasdhsodiu: ', [ 'receiptInfo' => $receiptInfo]);
-        return response()->json([
-            'receipt_info' => $receiptInfo
-        ], 200);
+        return response()->json(
+            $receiptInfo
+        , 200);
     }
 
     /**

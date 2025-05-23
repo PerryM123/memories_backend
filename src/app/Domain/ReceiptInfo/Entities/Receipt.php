@@ -13,7 +13,9 @@ class Receipt implements \JsonSerializable
     private int $total_amount;
     private int $person_1_amount;
     private int $person_2_amount;
-    private Collection $bought_items;
+    private Collection $person_1_bought_items;
+    private Collection $person_2_bought_items;
+    private Collection $both_bought_items;
 
     // QUESTION: Should this be an object to be passed in so that we can type/dependency inject it? Or no?
     public function __construct(
@@ -24,7 +26,9 @@ class Receipt implements \JsonSerializable
         string $total_amount,
         string $person_1_amount,
         string $person_2_amount,
-        Collection $bought_items
+        Collection $person_1_bought_items,
+        Collection $person_2_bought_items,
+        Collection $both_bought_items
     ) {
         $this->receipt_id = $receipt_id;
         $this->title = $title;
@@ -33,7 +37,9 @@ class Receipt implements \JsonSerializable
         $this->total_amount = $total_amount;
         $this->person_1_amount = $person_1_amount;
         $this->person_2_amount = $person_2_amount;
-        $this->bought_items = $bought_items ?? new Collection();
+        $this->person_1_bought_items = $person_1_bought_items ?? new Collection();
+        $this->person_2_bought_items = $person_2_bought_items ?? new Collection();
+        $this->both_bought_items = $both_bought_items ?? new Collection();
     }
     public function getReceiptId(): int
     {
@@ -63,9 +69,17 @@ class Receipt implements \JsonSerializable
     {
         return $this->person_2_amount;
     }
-    public function getBoughtItems(): Collection
+    public function getPersonOneBoughtItems(): Collection
     {
-        return $this->bought_items;
+        return $this->person_1_bought_items;
+    }
+    public function getPersonTwoBoughtItems(): Collection
+    {
+        return $this->person_2_bought_items;
+    }
+    public function getBothBoughtItems(): Collection
+    {
+        return $this->both_bought_items;
     }
     public function jsonSerialize(): array
     {
@@ -77,7 +91,9 @@ class Receipt implements \JsonSerializable
             'total_amount' => $this->total_amount,
             'person_1_amount' => $this->person_1_amount,
             'person_2_amount' => $this->person_2_amount,
-            'bought_items' => $this->bought_items->toArray()
+            'person_1_bought_items' => $this->person_1_bought_items->values(),
+            'person_2_bought_items' => $this->person_2_bought_items->values(),
+            'both_bought_items' => $this->both_bought_items->values()
         ];
     }
 }

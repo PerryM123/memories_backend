@@ -34,9 +34,51 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                 $item->payer_name
             );
         });
-        Log::info('boughtItemsCollection: ', [ 'boughtItemsCollection' => $boughtItemsCollection]);
+        // TODO: set constants for perry and hannah and both
+        $person_1_bought_items = $boughtItemsCollection
+            ->filter(function ($item) {
+                return $item->getPayerName() === 'perry';
+            })
+            ->map(function ($item) {
+                return new BoughtItem(
+                    $item->getBoughtItemId(),
+                    $item->getReceiptId(),
+                    $item->getName(),
+                    $item->getPrice(),
+                    'perry'
+                );
+            });
+        Log::info('findById', ['person_1_bought_items' => $person_1_bought_items]);
+        $person_2_bought_items = $boughtItemsCollection
+            ->filter(function ($item) {
+                return $item->getPayerName() === 'hannah';
+            })
+            ->map(function ($item) {
+                return new BoughtItem(
+                    $item->getBoughtItemId(),
+                    $item->getReceiptId(),
+                    $item->getName(),
+                    $item->getPrice(),
+                    'hannah'
+                );
+            });
+        Log::info('findById', ['person_2_bought_items' => $person_2_bought_items]);
+        $both_bought_items = $boughtItemsCollection
+            ->filter(function ($item) {
+                return $item->getPayerName() === 'both';
+            })
+            ->map(function ($item) {
+                return new BoughtItem(
+                    $item->getBoughtItemId(),
+                    $item->getReceiptId(),
+                    $item->getName(),
+                    $item->getPrice(),
+                    'both'
+                );
+            });
+        Log::info('findById', ['both_bought_items' => $both_bought_items]);
 
-        $the_receipt = new Receipt(
+        return new Receipt(
             $receipt->receipt_id,
             $receipt->title,
             $receipt->image_url,
@@ -44,10 +86,11 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             $receipt->total_amount,
             $receipt->person_1_amount,
             $receipt->person_2_amount,
-            $boughtItemsCollection
-        );
-        Log::info('the_receipt: ', [ 'the_receipt' => $the_receipt]);
-        return $the_receipt;
+            $person_1_bought_items,
+            $person_2_bought_items,
+            $both_bought_items,
+            
+        );;
     }
     /**
      * @return Collection<int, ReceiptInfo>

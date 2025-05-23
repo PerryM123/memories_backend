@@ -81,7 +81,7 @@ class ReceiptInfoController extends Controller
     }
 
     /**
-     * TODO: comment必須
+     * Sends an image to OpenAI API to analyze and return the receipt info.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -105,7 +105,7 @@ class ReceiptInfoController extends Controller
     }
 
     /**
-     * TODO: comment必須
+     * Retrieve detailed information about a specific receipt by its ID.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

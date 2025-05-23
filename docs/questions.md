@@ -13,3 +13,10 @@
 ## PSR-12??
 
 ## Is PHPdocs important to you?
+
+## Question about types
+When I highlight $receipt in ReceiptInfoRepository, it shows:
+```
+@var mixed $receipt
+```
+Is there a way to show a more accurate type?

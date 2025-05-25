@@ -30,14 +30,15 @@ services:
       TZ: 'Asia/Tokyo'
     volumes:
       - mysql-volume:/var/lib/mysql
-  redis:
-    image: "redis:latest"
-    ports:
-      - "6379:6379"
-    volumes:
-      - "./data/redis:/data"
-      - "./docker/redis/redis.conf:/etc/redis.conf"
-    command: ["redis-server", "/etc/redis.conf"] # TODO: 確認必須
+  # TODO: When adding the login authentication system, uncomment out below
+  # redis:
+  #   image: "redis:latest"
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - "./data/redis:/data"
+  #     - "./docker/redis/redis.conf:/etc/redis.conf"
+  #   command: ["redis-server", "/etc/redis.conf"] # TODO: 確認必須
   minio:
     image: minio/minio
     container_name: minio

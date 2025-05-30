@@ -6,6 +6,7 @@ use App\Domain\BoughtItemInfo\Entities\BoughtItem;
 use App\Domain\ReceiptInfo\Contracts\ReceiptInfoRepositoryInterface;
 use App\Domain\ReceiptInfo\DTOs\PaginatedReceiptsDTO;
 use App\Domain\ReceiptInfo\Entities\Receipt;
+use App\Exceptions\S3UploadException;
 use App\Models\BoughtItemsInfo;
 use App\Models\ReceiptInfo;
 use Illuminate\Http\UploadedFile;
@@ -17,13 +18,10 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
 {
     public function findById($id): ?Receipt
     {
-        Log::info('findById: ', [ 'id' => $id]);
         $receipt_id = $id;
-        Log::info('findById: ', [ 'receipt_id' => $receipt_id]);
         $receipt = ReceiptInfo::find($receipt_id);
         if (!$receipt) return null;
         $boughtItems = BoughtItemsInfo::where('receipt_id', $id)->get();
-        Log::info('boughtItems: ', [ 'boughtItems' => $boughtItems]);
         
         $boughtItemsCollection = $boughtItems->map(function ($item) {
             return new BoughtItem(
@@ -48,7 +46,6 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                     'perry'
                 );
             });
-        Log::info('findById', ['person_1_bought_items' => $person_1_bought_items]);
         $person_2_bought_items = $boughtItemsCollection
             ->filter(function ($item) {
                 return $item->getPayerName() === 'hannah';
@@ -62,7 +59,6 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                     'hannah'
                 );
             });
-        Log::info('findById', ['person_2_bought_items' => $person_2_bought_items]);
         $both_bought_items = $boughtItemsCollection
             ->filter(function ($item) {
                 return $item->getPayerName() === 'both';
@@ -76,7 +72,6 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                     'both'
                 );
             });
-        Log::info('findById', ['both_bought_items' => $both_bought_items]);
 
         return new Receipt(
             $receipt->receipt_id,
@@ -109,7 +104,6 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         $receiptInfoCollection = ReceiptInfo::skip($skip)
             ->take($PAGINATION_PER_PAGE)
             ->get();
-        Log::info('repo: getPaginatedReceipts: receiptInfoCollection', ['receiptInfoCollection' => $receiptInfoCollection]);
         return new PaginatedReceiptsDTO(
             receipt_data: $receiptInfoCollection,
             total: ReceiptInfo::count()
@@ -126,12 +120,14 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         UploadedFile $imageFile
     ): void
     {
+        $imageUrl = '';
         try {
             /** @var \Illuminate\Filesystem\FilesystemAdapter $s3 */
             $s3 = Storage::disk('s3');
             $filename = uniqid() . '.' . $imageFile->getClientOriginalExtension();
             $path = $s3->putFileAs('uploads/images', $imageFile, $filename);
-            $imageUrl = $s3->url($path);                        
+            $imageUrl = $s3->url($path);  
+            
             $receipt_info = ReceiptInfo::create([
                 'title' => $title,
                 'image_url' => $imageUrl,
@@ -140,14 +136,17 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                 'person_1_amount' => $person_1_amount,
                 'person_2_amount' => $person_2_amount,
             ]);
-            Log::info('Receipt Info was successfully uploaded to s3', ['$receipt_info' => $receipt_info]);
-
+        } catch (\RuntimeException $e) {
+            Log::error('S3 storage error', [
+                'error' => $e->getMessage(),
+                'file' => $imageFile->getClientOriginalName()
+            ]);
+            throw new S3UploadException('Failed to upload image', $imageFile->getClientOriginalName());
+        } 
+        try {
             // TODO: Fix timezone of the project
             $timestamp_now = now();
             $boughtItemsData = array_map(function($item) use ($receipt_info, $timestamp_now) {
-                Log::info('whats in the box', [
-                    'item' => $item
-                ]);    
                 return [
                     'receipt_id' => $receipt_info->receipt_id,
                     'name' => $item['name'],
@@ -157,32 +156,18 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                     'updated_at' => $timestamp_now
                 ];
             }, $bought_items);
-
-            
-            Log::info('Before insert', [
-                'boughtItemsData' => $boughtItemsData
-            ]);
-
             BoughtItemsInfo::insert($boughtItemsData);
-
-            Log::info('Receipt and bought items were successfully saved', [
-                'receipt_id' => $receipt_info->receipt_id,
-                'bought_items_count' => count($boughtItemsData)
-            ]);
-
         } catch (\Exception $e) {
-            $errorMessage = 'Failed to save receipt and bought items';
-            Log::error($errorMessage, [
+            Log::error('S3 storage error', [
                 'error' => $e->getMessage(),
                 'file' => $imageFile->getClientOriginalName()
             ]);
-            throw new \RuntimeException($errorMessage . ': ' . $e->getMessage());
-        }
+            throw new \Exception('An unexpected error occurred');
+        } 
     }
     // Question: Type needed for parameter. Would it be better if this were to return a DTO instead of a plain array?
     public function getInfoFromReceiptImage(UploadedFile $imageFile)
     {
-        Log::info('getReceiptInfoFromReceiptImage:', ['image' => $imageFile]);
         // TODO: This $receipt_info is dummy data. Open AI API will be set here
         $receipt_info = [
         "items" => [

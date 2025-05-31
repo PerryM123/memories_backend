@@ -66,7 +66,7 @@ class ReceiptInfoController extends Controller
             $validatedData = $validator->validated();
             $title = $validatedData['title'];
             $userWhoPaid = $validatedData['user_who_paid'];
-            $this->ReceiptInfoService->storeNewReceipt(
+            $receiptInfo = $this->ReceiptInfoService->storeNewReceipt(
                 $title, 
                 $userWhoPaid, 
                 $validatedData['total_amount'],
@@ -76,9 +76,7 @@ class ReceiptInfoController extends Controller
                 $validatedData['total_amount'],
                 $request->file('image')
             );
-            return response()->json([
-                'message' => 'Receipt Info Saved Successfully',
-            ], 201);
+            return response()->json($receiptInfo, 201);
         } catch (S3UploadException $e) {
             Log::error('S3UploadException in storeReceiptInfo', [
                 'error' => $e->getMessage(),

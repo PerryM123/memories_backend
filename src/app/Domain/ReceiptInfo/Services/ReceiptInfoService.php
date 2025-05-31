@@ -36,7 +36,6 @@ class ReceiptInfoService
     /**
      * Saves receipt info into database
      */
-    // TODO: Need to figure out the return type for this function
     public function storeNewReceipt(
         string $title,
         string $userWhoPaid,
@@ -46,9 +45,9 @@ class ReceiptInfoService
         array $bought_items,
         int $total_amount,
         UploadedFile $imageFile
-    ) {
+    ): ?Receipt {
         Log::info('ReceiptInfoService: storeNewReceipt:', ['image' => $imageFile]);
-        $this->ReceiptInfoRepository->storeNewReceiptInfoToDatabse(
+        return $this->ReceiptInfoRepository->storeNewReceiptInfoToDatabase(
             $title, 
             $userWhoPaid, 
             $totalAmount, 

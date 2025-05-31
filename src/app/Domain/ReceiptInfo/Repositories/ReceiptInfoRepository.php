@@ -16,13 +16,18 @@ use Illuminate\Support\Facades\Storage;
 
 class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
 {
+    // TODO: Why does this not have $ ???
+    private const PAYER_PERRY = 'perry';
+    private const PAYER_HANNAH = 'hannah';
+    private const PAYER_BOTH = 'both';
+
     public function findById($id): ?Receipt
     {
         $receipt_id = $id;
         $receipt = ReceiptInfo::find($receipt_id);
         if (!$receipt) return null;
+        // TODO: Make this DRY!!!
         $boughtItems = BoughtItemsInfo::where('receipt_id', $id)->get();
-        
         $boughtItemsCollection = $boughtItems->map(function ($item) {
             return new BoughtItem(
                 $item->bought_item_id,
@@ -32,10 +37,9 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                 $item->payer_name
             );
         });
-        // TODO: set constants for perry and hannah and both
         $person_1_bought_items = $boughtItemsCollection
             ->filter(function ($item) {
-                return $item->getPayerName() === 'perry';
+                return $item->getPayerName() === self::PAYER_PERRY;
             })
             ->map(function ($item) {
                 return new BoughtItem(
@@ -43,12 +47,12 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                     $item->getReceiptId(),
                     $item->getName(),
                     $item->getPrice(),
-                    'perry'
+                    self::PAYER_PERRY
                 );
             });
         $person_2_bought_items = $boughtItemsCollection
             ->filter(function ($item) {
-                return $item->getPayerName() === 'hannah';
+                return $item->getPayerName() === self::PAYER_HANNAH;
             })
             ->map(function ($item) {
                 return new BoughtItem(
@@ -56,12 +60,12 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                     $item->getReceiptId(),
                     $item->getName(),
                     $item->getPrice(),
-                    'hannah'
+                    self::PAYER_HANNAH
                 );
             });
         $both_bought_items = $boughtItemsCollection
             ->filter(function ($item) {
-                return $item->getPayerName() === 'both';
+                return $item->getPayerName() === self::PAYER_BOTH;
             })
             ->map(function ($item) {
                 return new BoughtItem(
@@ -69,7 +73,7 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                     $item->getReceiptId(),
                     $item->getName(),
                     $item->getPrice(),
-                    'both'
+                    self::PAYER_BOTH
                 );
             });
 
@@ -109,7 +113,7 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             total: ReceiptInfo::count()
         );
     }
-    public function storeNewReceiptInfoToDatabse(
+    public function storeNewReceiptInfoToDatabase(
         string $title,
         string $userWhoPaid,
         int $totalAmount,
@@ -118,7 +122,7 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         array $bought_items,
         int $total_amount,
         UploadedFile $imageFile
-    ): void
+    ): ?Receipt
     {
         $imageUrl = '';
         try {
@@ -163,7 +167,70 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
                 'file' => $imageFile->getClientOriginalName()
             ]);
             throw new \Exception('An unexpected error occurred');
-        } 
+        }
+        // TODO: Make this DRY!!!
+        $boughtItems = BoughtItemsInfo::where('receipt_id', $receipt_info->receipt_id)->get();
+        $boughtItemsCollection = $boughtItems->map(function ($item) {
+            return new BoughtItem(
+                $item->bought_item_id,
+                $item->receipt_id,
+                $item->name,
+                $item->price,
+                $item->payer_name
+            );
+        });
+        $person_1_bought_items = $boughtItemsCollection
+            ->filter(function ($item) {
+                return $item->getPayerName() === self::PAYER_PERRY;
+            })
+            ->map(function ($item) {
+                return new BoughtItem(
+                    $item->getBoughtItemId(),
+                    $item->getReceiptId(),
+                    $item->getName(),
+                    $item->getPrice(),
+                    self::PAYER_PERRY
+                );
+            });
+        $person_2_bought_items = $boughtItemsCollection
+            ->filter(function ($item) {
+                return $item->getPayerName() === self::PAYER_HANNAH;
+            })
+            ->map(function ($item) {
+                return new BoughtItem(
+                    $item->getBoughtItemId(),
+                    $item->getReceiptId(),
+                    $item->getName(),
+                    $item->getPrice(),
+                    self::PAYER_HANNAH
+                );
+            });
+        $both_bought_items = $boughtItemsCollection
+            ->filter(function ($item) {
+                return $item->getPayerName() === self::PAYER_BOTH;
+            })
+            ->map(function ($item) {
+                return new BoughtItem(
+                    $item->getBoughtItemId(),
+                    $item->getReceiptId(),
+                    $item->getName(),
+                    $item->getPrice(),
+                    self::PAYER_BOTH
+                );
+            });
+        return new Receipt(
+            $receipt_info->receipt_id,
+            $receipt_info->title,
+            $receipt_info->image_url,
+            $receipt_info->user_who_paid,
+            $receipt_info->total_amount,
+            $receipt_info->person_1_amount,
+            $receipt_info->person_2_amount,
+            $person_1_bought_items,
+            $person_2_bought_items,
+            $both_bought_items
+        );
+
     }
     // Question: Type needed for parameter. Would it be better if this were to return a DTO instead of a plain array?
     public function getInfoFromReceiptImage(UploadedFile $imageFile)

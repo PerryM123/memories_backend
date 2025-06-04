@@ -116,6 +116,7 @@ class ReceiptInfoController extends Controller
             }
             $receiptInfo = $this->ReceiptInfoService->getInfoFromReceiptImage($request->file('image'));
             // TODO: Make it so that we can pass the $receiptInfo as is instead of with a message
+            Log::info("analyzeReceiptImage", ['receiptInfo response' => $receiptInfo]);
             return response()->json([
                 'message' => 'Receipt Info Analyzed Successfully',
                 'receipt_info' => $receiptInfo
@@ -152,6 +153,7 @@ class ReceiptInfoController extends Controller
                 'error_message' => 'receipt_info does not exist'
             ], 404);
         }
+        Log::info("getReceiptDetails", ['receiptInfo response' => $receiptInfo]);
         return response()->json(
             $receiptInfo
         , 200);

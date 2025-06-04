@@ -11,13 +11,10 @@ use App\Exceptions\S3UploadException;
 use App\Infrastructure\OpenAi\Contracts\ReceiptAnalysisServiceInterface;
 use App\Models\BoughtItemsInfo;
 use App\Models\ReceiptInfo;
-use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
 {
@@ -141,10 +138,9 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             $filename = uniqid() . '.' . $imageFile->getClientOriginalExtension();
             $path = $s3->putFileAs('uploads/images', $imageFile, $filename);
             $imageUrl = $s3->url($path);  
-            
             $receipt_info = ReceiptInfo::create([
                 'title' => $title,
-                'image_url' => $imageUrl,
+                'image_url' => $path,
                 'user_who_paid' => $userWhoPaid,
                 'total_amount' => $totalAmount,
                 'person_1_amount' => $person_1_amount,

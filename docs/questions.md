@@ -20,3 +20,13 @@ When I highlight $receipt in ReceiptInfoRepository, it shows:
 @var mixed $receipt
 ```
 Is there a way to show a more accurate type?
+
+## Do you often use:
+```sql
+START TRANSACTION;
+UPDATE products SET price = 19.99 WHERE id = 5;
+-- Oops! Something's wrong?
+ROLLBACK;  -- Undoes the update
+-- Or:
+COMMIT;    -- Saves the update
+```

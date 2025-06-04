@@ -4,19 +4,22 @@ namespace App\Domain\ReceiptInfo\Repositories;
 
 use App\Domain\BoughtItemInfo\Entities\BoughtItem;
 use App\Domain\ReceiptInfo\Contracts\ReceiptInfoRepositoryInterface;
+use App\Domain\ReceiptInfo\DTOs\AnalyzedReceiptDTO;
 use App\Domain\ReceiptInfo\DTOs\PaginatedReceiptsDTO;
 use App\Domain\ReceiptInfo\Entities\Receipt;
 use App\Exceptions\S3UploadException;
 use App\Models\BoughtItemsInfo;
 use App\Models\ReceiptInfo;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
 {
-    // TODO: Why does this not have $ ???
     private const PAYER_PERRY = 'perry';
     private const PAYER_HANNAH = 'hannah';
     private const PAYER_BOTH = 'both';
@@ -232,32 +235,56 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         );
 
     }
-    // Question: Type needed for parameter. Would it be better if this were to return a DTO instead of a plain array?
-    public function getInfoFromReceiptImage(UploadedFile $imageFile)
+    public function getInfoFromReceiptImage(UploadedFile $imageFile): AnalyzedReceiptDTO
     {
-        // TODO: This $receipt_info is dummy data. Open AI API will be set here
-        $receipt_info = [
-        "items" => [
-            [ "name" => "ハーゲンミニCロウチャクリキーウカ", "price_total" => 218 ],
-            [ "name" => "オリジナルスフラッドオレンジ", "price_total" => 204 ],
-            [ "name" => "オカメ スコイサットS-903", "price_total" => 264 ],
-            [ "name" => "アタックウオシEXヘヤカカ850g", "price_total" => 308 ],
-            [ "name" => "コウサンウオトンジヤ玉150×3", "price_total" => 78 ],
-            [ "name" => "セブンスターリサンゴールド", "price_total" => 499 ],
-            [ "name" => "ワイドハイターEXパワー820ml", "price_total" => 328 ],
-            [ "name" => "サラヤ テイユコット100ムコち56", "price_total" => 280 ],
-            [ "name" => "バナナ", "price_total" => 256 ],
-            [ "name" => "ハウスバイング35g", "price_total" => 100 ],
-            [ "name" => "トマト コツコ", "price_total" => 398 ],
-            [ "name" => "タンノンビオカセイタクブドウ", "price_total" => 326 ],
-            [ "name" => "タンノンビオ シチリアレモン 4コ", "price_total" => 163 ],
-            [ "name" => "コイワイヨーグルトホンボウ400g", "price_total" => 199 ],
-            [ "name" => "ミヤマ イチオシムキチ 200g", "price_total" => 153 ],
-            [ "name" => "コウサンウオカトリムネニク", "price_total" => 596 ],
-        ],
-        "receipt_total" => 4626
-        ];
-
-        return $receipt_info;
+        $apiKey = config('services.openai.apiKey');
+        $apiEndpoint = config('services.openai.apiEndpoint');
+        if (!$apiKey || !$apiEndpoint) {
+            throw new \Exception('OpenAI API configuration is missing');
+        }
+        $base64Image = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($imageFile));
+        try {
+            $response = Http::withToken($apiKey, 'Bearer')
+                ->post($apiEndpoint . '/v1/chat/completions', [
+                    'model' => 'gpt-4.1-mini',
+                    'messages' => [
+                        [
+                            'role' => 'user', 
+                            'content' => [
+                                [
+                                    'type' => 'text',
+                                    'text' => "I have a receipt image attached. The left side is the item. The right side is the price. Please ignore phrases like '２コX単', 'スキャンレシ', and ignore discounts on the right side. Please do not add ```json to the final response. Please return the final response in plain text. Can you give receipt information in JSON format based on the typescript interfaces below? ```interface Receipt {  items: Item[]  // 合計  receipt_total: number}interface Item {  name: string  price_total: number}```"
+                                ],
+                                [
+                                    'type' => 'image_url',
+                                    'image_url' => [
+                                        'url' => $base64Image
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]);
+            $responseData = $response->json();
+            if (isset($responseData['error']) && $responseData['error']) {
+                Log::error(['error message: ' => $responseData['error']['message']]);
+                throw new \Exception($responseData['error']['message']);
+            }
+            Validator::make($responseData, [
+                'choices' => 'required|array',
+                'choices.0.message.content' => 'required|string',
+            ])->validate();
+            $openAiContentJson = json_decode($responseData['choices'][0]['message']['content']);
+            return new AnalyzedReceiptDTO(
+                items: $openAiContentJson->items,
+                receipt_total: $openAiContentJson->receipt_total
+            );
+        } catch (\Exception $e) {
+            Log::error('API Request Failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Domain\ReceiptInfo\Services;
 
 use App\Domain\ReceiptInfo\Contracts\ReceiptInfoRepositoryInterface;
+use App\Domain\ReceiptInfo\DTOs\AnalyzedReceiptDTO;
 use App\Domain\ReceiptInfo\DTOs\PaginatedReceiptsDTO;
 use App\Domain\ReceiptInfo\Entities\Receipt;
 use Illuminate\Http\UploadedFile;
@@ -64,7 +65,7 @@ class ReceiptInfoService
      */
     // TODO: 実装必須
     // TODO: Need a proper return type for this function...
-    public function getInfoFromReceiptImage(UploadedFile $imageFile) {
+    public function getInfoFromReceiptImage(UploadedFile $imageFile): AnalyzedReceiptDTO {
         Log::info('ReceiptInfoService: analyzeReceiptImage:', ['image' => $imageFile]);
         return $this->ReceiptInfoRepository->getInfoFromReceiptImage($imageFile);
     }

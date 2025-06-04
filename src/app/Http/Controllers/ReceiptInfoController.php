@@ -106,18 +106,29 @@ class ReceiptInfoController extends Controller
      */
     public function analyzeReceiptImage(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'image' => 'required|file|image|max:5120', // max 5MB
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error_info' => 'validation error'], 400);
+        // TODO: Is there a way to not have to always try catch everything? Is there a more DRY way to do this?
+        try{
+            $validator = Validator::make($request->all(), [
+                'image' => 'required|file|image|max:5120', // max 5MB
+            ]);
+            if ($validator->fails()) {
+                return response()->json(['error_info' => 'validation error'], 400);
+            }
+            $receiptInfo = $this->ReceiptInfoService->getInfoFromReceiptImage($request->file('image'));
+            // TODO: Make it so that we can pass the $receiptInfo as is instead of with a message
+            return response()->json([
+                'message' => 'Receipt Info Analyzed Successfully',
+                'receipt_info' => $receiptInfo
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Unexpected error in storeReceiptInfo', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error_message' => 'An unexpected error occurred'
+            ], 500);
         }
-        $receiptInfo = $this->ReceiptInfoService->getInfoFromReceiptImage($request->file('image'));
-        // TODO: Make it so that we can pass the $receiptInfo as is instead of with a message
-        return response()->json([
-            'message' => 'Receipt Info Analyzed Successfully',
-            'receipt_info' => $receiptInfo
-        ], 200);
     }
 
     /**

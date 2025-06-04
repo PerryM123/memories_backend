@@ -6,6 +6,8 @@ use App\Domain\ReceiptInfo\Contracts\ReceiptInfoRepositoryInterface;
 use App\Domain\ReceiptInfo\Repositories\ReceiptInfoRepository;
 use App\Domain\UserInfo\Contracts\UserInfoRepositoryInterface;
 use App\Domain\UserInfo\Repositories\UserInfoRepository;
+use App\Infrastructure\OpenAi\Contracts\ReceiptAnalysisServiceInterface;
+use App\Infrastructure\OpenAi\Services\ReceiptAnalysisService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
          */
         $this->app->bind(UserInfoRepositoryInterface::class, UserInfoRepository::class);
         $this->app->bind(ReceiptInfoRepositoryInterface::class, ReceiptInfoRepository::class);
+        $this->app->bind(ReceiptAnalysisServiceInterface::class, ReceiptAnalysisService::class);
     }
 
     /**

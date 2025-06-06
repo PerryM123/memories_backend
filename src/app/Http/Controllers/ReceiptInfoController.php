@@ -76,6 +76,7 @@ class ReceiptInfoController extends Controller
                 $validatedData['total_amount'],
                 $request->file('image')
             );
+            Log::info("storeReceiptInfo", ['receiptInfo response' => $receiptInfo]);
             return response()->json($receiptInfo, 201);
         } catch (S3UploadException $e) {
             Log::error('S3UploadException in storeReceiptInfo', [

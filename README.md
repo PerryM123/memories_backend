@@ -1,16 +1,27 @@
-# Memories (backend)
+# Split My Receipt Up (Backend)
 
 ※ [English README.md is here！](/docs/README-english.md)👈
 
 ## なぜ作ってるか
 
-僕は思い出を忘れがちな人で、最近Google Photosの「最近の思い出！4年前の写真！」の通知を見ると嬉しいのでいいことが起きた直後に思い出を文字で投稿し、いい思い出を楽しく振り向くアプリを作成したいです！
+レシートを見て手動で計算するよりAIのOCR（文字認識）でレシートの文字を取得し計算してくれるアプリは制作したいです！
 
-つまり、日記版のGoogle Photosアプリです（笑）
 
 ## 何を学びたいか
 
-僕はフロントエンドエンジニアだけどバックエンド開発の経験はほぼ０で自分の会社のバックエンドチームのやってることがあまり把握できてないため自分のバックエンド知識を深める目標です！
+僕は今までフロントエンド開発しかやったことがなく、あまりバックエンドの知識が深くなく、本格的にバックエンド開発をする機会もなく、バックエンドチームともっと話し合いできるように「バックエンドはどう動いてるか？バックエンドだと何を考慮するべきか？」ということを学ぶ目標をしてます。
+なのでLaravelでドメイン駆動設計(DDD)を実践しつつ気になるフロントエンドツールとフレームワーク（vitest、playwright、tailwindcss、figmaなど）を活用します！
+
+今のリポジトリはフロントエンド用で、バックエンド側は以下です！
+- [PerryM123/memories_backend](https://github.com/PerryM123/memories_backend)
+
+## 簡単なアーキテクチャ設計
+![alt text](/docs/images/simple-architecture.jpg)
+
+## ワイヤーフレーム
+- [figmaワイヤー](https://www.figma.com/design/5YJWfJxPOz41nTYUs3Ecsv/Split-Me-Up-Before-You-Go-Go?node-id=0-1&t=pg6lQGz4q81qqjrR-1)
+
+![alt text](/docs/images/wireframe.jpg)
 
 ## ローカル環境構築
 

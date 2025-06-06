@@ -1,15 +1,20 @@
-# Memories (backend)
+# Split My Receipt Up (Backend)
 
 ※ [日本語のREADME.mdはここ！](./../README.md)👈
 
 ## Why am I Making This?
-I tend to forget things after they happen and I love Google Photos' "New Memory For You! 4 Years" notification so I want to make an app I can quickly jot down a fun moment/thought right after it happens so that I can later reminisce about them.
-
-So basically, a journal version of Google Photos w/ notifications.
+Instead of calculating receipts by hand, let's use AI's OCR instead to convert a photo of a receipt into a machine-readable text format and calculate it that way!
 
 ## What I Want to Learn From Making This?
+I've never had the chance to work in the backend of web development so I will take this oppurtunity to use Laravel and make an application following Domain-Driven Design (DDD) principles (reference: https://github.com/PerryM123/memories_backend). This repository will be for the frontend and using frontend tools I want to get into. For example: vitest, playwright, tailwindcss, figma, etc）
 
-I am frontend engineer but I lack backend experience and have a hard time understanding what the backend teams are doing at my company so I'm using this oppurtunity to learn a bit of backend development to improve my understanding of backend development.
+## Simple Architecture
+![alt text](/docs/images/simple-architecture.jpg)
+
+## Wireframe
+- [figma design](https://www.figma.com/design/5YJWfJxPOz41nTYUs3Ecsv/Split-Me-Up-Before-You-Go-Go?node-id=0-1&t=pg6lQGz4q81qqjrR-1)
+
+![alt text](/docs/images/wireframe.jpg)
 
 ## Setup Local Environment
 

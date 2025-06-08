@@ -5,8 +5,8 @@ namespace App\Domain\ReceiptInfo\DTOs;
 
 class AnalyzedReceiptDTO implements \JsonSerializable
 {
-    public array $items;
-    public int $receipt_total;
+    private array $items;
+    private int $receipt_total;
 
     public function __construct(array $items, int $receipt_total)
     {

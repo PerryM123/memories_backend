@@ -8,13 +8,13 @@ class PaginatedReceiptsDTO implements \JsonSerializable
 {
     public function __construct(
         private Collection $receipt_data,
-        private int $total
+        private int $receipt_count
     ) {}
     public function jsonSerialize(): array
     {
         return [
             'receipt_data' => $this->receipt_data,
-            'total' => $this->total,
+            'receipt_count' => $this->receipt_count,
         ];
     }
 }

@@ -117,7 +117,7 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
             ->get();
         return new PaginatedReceiptsDTO(
             receipt_data: $receiptInfoCollection,
-            total: ReceiptInfo::count()
+            receipt_count: ReceiptInfo::count()
         );
     }
     public function storeNewReceiptInfoToDatabase(

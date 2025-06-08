@@ -26,6 +26,7 @@ class ReceiptInfoController extends Controller
     {
         $page = $request->query('page', 1);
         $receiptInfo = $this->ReceiptInfoService->getPaginatedReceipts($page);
+        Log::info("index", ['receiptInfo response' => $receiptInfo]);
         return response()->json($receiptInfo);
     }
 

@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - ./src/:/app
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    ports:
+      - 80:80 # default HTTP port
+      - 8081:80
+    depends_on:
+      - app
+    volumes:
+      - ./src/:/app
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    ports:
+      - 3307:3307
+    environment:
+      MYSQL_DATABASE: memories_database_e2e
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - mysql-e2e-volume:/var/lib/mysql
+  # TODO: When adding the login authentication system, uncomment out below
+  # redis:
+  #   image: "redis:latest"
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - "./data/redis:/data"
+  #     - "./docker/redis/redis.conf:/etc/redis.conf"
+  #   command: ["redis-server", "/etc/redis.conf"] # TODO: 確認必須
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      # API access
+      - "9000:9000"
+      # Admin UI
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  mysql-volume:
+  minio_data:
+  mysql-e2e-volume:

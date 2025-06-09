@@ -4,6 +4,7 @@
 /src/storage/*.key
 /src/vendor
 /src/.env
+/src/.env.e2e-testing
 /src/.devdbrc
 /src/.env.backup
 /src/.phpunit.result.cache

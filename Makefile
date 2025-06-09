@@ -13,6 +13,9 @@ db-bash:
 	docker compose exec db bash
 
 up:
+	 docker-compose up -d app web db minio
+
+up-all:
 	docker-compose up -d
 
 up-with-build:
@@ -29,3 +32,12 @@ laravel-log:
 
 mysql:
 	docker compose exec db mysql -u root -p
+
+e2e-env-up:
+	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing up -d
+
+e2e-env-down:
+	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing down
+
+e2e-migrate:
+	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing exec app php artisan migrate:refresh --seed

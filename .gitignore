@@ -16,4 +16,5 @@
 /.idea
 /.vscode
 /.devdbrc
+/.db_backups
 /data/redis

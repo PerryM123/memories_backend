@@ -93,6 +93,22 @@ root@584ffe96183c:/app# exit
 $ make setup-local-env-files
 ```
 
+## Milestones
+- [x] 以下、アプリが利用するものをコンテナ内で動かすようにdocker化
+	- Laravel App
+	- Mysql Database
+	- Nginx
+	- Local S3 (MinIO)
+- [x] ドメイン駆動設計にバックエンドを実装
+- [x] 外部API(OpenAI API)を呼び出すように実装
+- [ ] NuxtのみがLaravel APIを叩けるようにBearer tokensを追加
+- [ ] 単体テストと結合テストを追加
+- [ ] プロトタイプは完了になると `v0.1.0` としてリリース
+- [ ] セッションストレージとしてredisを利用するようにログインを実装
+- [ ] VPSまたはEC2にデプロイ
+- [ ] APIレスポンスの時間を早くするようにデータベースの最適化を行う
+- [ ] IPアドレスとメルアドによってレート制限するように実現
+
 ## おすすめのツール・Extensionなど
 
 ### VSCodeでデータベースの中身を見える化ツール

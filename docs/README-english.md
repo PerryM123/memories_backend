@@ -86,6 +86,22 @@ root@584ffe96183c:/app# exit
 $ make setup-local-env-files
 ```
 
+## Milestones
+- [x] Dockerize everything for my app: 
+	- Laravel App
+	- Mysql Database
+	- Nginx
+	- Local S3 (MinIO)
+- [x] Build the backend using Domain Driven Design
+- [x] Setup external APIs (OpenAI API) to be used within my app
+- [ ] Integrate Bearer tokens so that only Nuxt can make requests to the laravel API
+- [ ] Make unit and integration tests
+- [ ] Release the prototype as `v0.1.0`
+- [ ] Login integration w/ redis to use session storage
+- [ ] Deploy containers to a VPS or EC2
+- [ ] Make optimizations on the database to speed up response times
+- [ ] Integrate Rate Limiting for requests based on IP addresses or emails
+
 ## Useful Tools and Extension
 
 ### View the contents of the database in VSCode

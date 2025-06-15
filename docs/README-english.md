@@ -95,6 +95,7 @@ $ make setup-local-env-files
 - [x] Build the backend using Domain Driven Design
 - [x] Setup external APIs (OpenAI API) to be used within my app
 - [x] Integrate Bearer tokens so that only Nuxt can make requests to the laravel API
+- [ ] Add Swagger (OpenAPI) and host on github pages
 - [ ] Add Laravel-Pint or tighten-duster for linting and formatting
 - [ ] Make unit and integration tests
 - [ ] Release the prototype as `v0.1.0`

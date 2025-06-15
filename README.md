@@ -102,6 +102,7 @@ $ make setup-local-env-files
 - [x] ドメイン駆動設計にバックエンドを実装
 - [x] 外部API(OpenAI API)を呼び出すように実装
 - [x] NuxtのみがLaravel APIを叩けるようにBearer tokensを追加
+- [ ] Swagger (OpenAPI)というツールを導入し、github pagesで見れるように設定
 - [ ] 自動でリンターフォーマッターが動くようにLaravel-PintまたはPHP-CS-Fixerまたはtighten-dusterを利用
 - [ ] 単体テストと結合テストを追加
 - [ ] プロトタイプは完了になると `v0.1.0` としてリリース

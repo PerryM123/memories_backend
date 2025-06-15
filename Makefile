@@ -43,7 +43,7 @@ e2e-env-down:
 	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing down
 
 e2e-migrate:
-	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing exec app php artisan migrate:refresh --seed
+	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing exec app php artisan migrate:refresh --seed --env=e2e-testing
 
 e2e-up-with-build:
 	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing up -d --build

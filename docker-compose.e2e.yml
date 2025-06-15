@@ -5,6 +5,9 @@ services:
       dockerfile: ./docker/app/Dockerfile
     volumes:
       - ./src/:/app
+    environment:
+      APP_ENV: e2e-testing
+      LARAVEL_ENV_FILE: .env.e2e-testing
   web:
     build:
       context: .

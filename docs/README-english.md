@@ -94,7 +94,7 @@ $ make setup-local-env-files
 	- Local S3 (MinIO)
 - [x] Build the backend using Domain Driven Design
 - [x] Setup external APIs (OpenAI API) to be used within my app
-- [ ] Integrate Bearer tokens so that only Nuxt can make requests to the laravel API
+- [x] Integrate Bearer tokens so that only Nuxt can make requests to the laravel API
 - [ ] Add Laravel-Pint or tighten-duster for linting and formatting
 - [ ] Make unit and integration tests
 - [ ] Release the prototype as `v0.1.0`

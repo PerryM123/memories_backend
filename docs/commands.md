@@ -68,6 +68,11 @@ $ php artisan test
 $ php artisan route:list
 ```
 
+## Make a middleware
+```sh
+$ php artisan make:middleware VerifyAuthBearerToken
+```
+
 ## MySQL Commands
 ```sql
 -- List of databases

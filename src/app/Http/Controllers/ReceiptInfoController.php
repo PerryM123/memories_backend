@@ -151,8 +151,9 @@ class ReceiptInfoController extends Controller
         $validatedData = $validator->validated();
         $receiptInfo = $this->ReceiptInfoService->getReceiptById($validatedData['receipt_id']);
         if (!$receiptInfo) {
+            Log::info("getReceiptDetails", ['error_message' => 'receipt ID "' . $receipt_id . '" does not exist']);
             return response()->json([
-                'error_message' => 'receipt_info does not exist'
+                'error_message' => 'receipt ID "' . $receipt_id . '" does not exist'
             ], 404);
         }
         Log::info("getReceiptDetails", ['receiptInfo response' => $receiptInfo]);

@@ -27,7 +27,7 @@ Route::get('/test-redis', function () {
 Route::middleware([VerifyBearerToken::class])->group(function () {
     Route::post('/receipt-info', [ReceiptInfoController::class, 'storeReceiptInfo']);
     Route::get('/receipt-info', [ReceiptInfoController::class, 'index']);
-    Route::get('/receipt-info/{receipt_id}', [ReceiptInfoController::class, 'getReceiptDetails']);
     Route::post('/receipt-info/analyze', [ReceiptInfoController::class, 'analyzeReceiptImage']);
+    Route::get('/receipt-info/{receipt_id}', [ReceiptInfoController::class, 'getReceiptDetails']);
 });
 

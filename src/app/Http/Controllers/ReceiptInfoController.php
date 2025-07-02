@@ -24,10 +24,29 @@ class ReceiptInfoController extends Controller
      */
     public function index(Request $request)
     {
-        $page = $request->query('page', 1);
-        $receiptInfo = $this->ReceiptInfoService->getPaginatedReceipts($page);
-        Log::info("index", ['receiptInfo response' => $receiptInfo]);
-        return response()->json($receiptInfo);
+        try {
+            $validator = Validator::make($request->query(), [
+                'page' => 'sometimes|integer|min:1|max:9999'
+            ]);
+            if ($validator->fails()) {
+                Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
+                return response()->json([
+                    'error_info' => "validation error"
+                ], 400);
+            }
+            $page = $request->query('page', 1);
+            $receiptInfo = $this->ReceiptInfoService->getPaginatedReceipts($page);
+            Log::info("index", ['receiptInfo response' => $receiptInfo]);
+            return response()->json($receiptInfo);
+        } catch (\Exception $e) {
+            Log::error('Unexpected error in index for receipt pagination', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error_message' => 'An unexpected error occurred'
+            ], 500);
+        }
     }
 
     /**
@@ -60,6 +79,7 @@ class ReceiptInfoController extends Controller
             ]);
             
             if ($validator->fails()) {
+                Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
                 return response()->json([
                     'error_info' => $validator->errors()
                 ], 400);
@@ -114,6 +134,7 @@ class ReceiptInfoController extends Controller
                 'image' => 'required|file|image|max:5120', // max 5MB
             ]);
             if ($validator->fails()) {
+                Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
                 return response()->json(['error_info' => 'validation error'], 400);
             }
             $receiptInfo = $this->ReceiptInfoService->getInfoFromReceiptImage($request->file('image'));
@@ -146,6 +167,7 @@ class ReceiptInfoController extends Controller
             'receipt_id' => 'required|integer|min:1'
         ]);
         if ($validator->fails()) {
+            Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
             return response()->json(['error_info' => 'validation error'], 400);
         }
         $validatedData = $validator->validated();

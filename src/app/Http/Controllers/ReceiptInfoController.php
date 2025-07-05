@@ -161,7 +161,7 @@ class ReceiptInfoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function getReceiptDetails(int $receipt_id, Request $request)
+    public function getReceiptDetails(string $receipt_id)
     {
         $validator = Validator::make(['receipt_id' => $receipt_id], [
             'receipt_id' => 'required|integer|min:1'

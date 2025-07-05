@@ -163,25 +163,36 @@ class ReceiptInfoController extends Controller
      */
     public function getReceiptDetails(string $receipt_id)
     {
-        $validator = Validator::make(['receipt_id' => $receipt_id], [
-            'receipt_id' => 'required|integer|min:1'
-        ]);
-        if ($validator->fails()) {
-            Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
-            return response()->json(['error_info' => 'validation error'], 400);
-        }
-        $validatedData = $validator->validated();
-        $receiptInfo = $this->ReceiptInfoService->getReceiptById($validatedData['receipt_id']);
-        if (!$receiptInfo) {
-            Log::info("getReceiptDetails", ['error_message' => 'receipt ID "' . $receipt_id . '" does not exist']);
+        try{
+            throw new \Exception('what the hell');
+            $validator = Validator::make(['receipt_id' => $receipt_id], [
+                'receipt_id' => 'required|integer|min:1'
+            ]);
+            if ($validator->fails()) {
+                Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
+                return response()->json(['error_info' => 'validation error'], 400);
+            }
+            $validatedData = $validator->validated();
+            $receiptInfo = $this->ReceiptInfoService->getReceiptById($validatedData['receipt_id']);
+            if (!$receiptInfo) {
+                Log::info("getReceiptDetails", ['error_message' => 'receipt ID "' . $receipt_id . '" does not exist']);
+                return response()->json([
+                    'error_message' => 'receipt ID "' . $receipt_id . '" does not exist'
+                ], 404);
+            }
+            Log::info("getReceiptDetails", ['receiptInfo response' => $receiptInfo]);
+            return response()->json(
+                $receiptInfo
+            , 200);
+        } catch (\Exception $e) {
+            Log::error('Unexpected error in storeReceiptInfo', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return response()->json([
-                'error_message' => 'receipt ID "' . $receipt_id . '" does not exist'
-            ], 404);
+                'error_message' => 'An unexpected error occurred'
+            ], 500);
         }
-        Log::info("getReceiptDetails", ['receiptInfo response' => $receiptInfo]);
-        return response()->json(
-            $receiptInfo
-        , 200);
     }
 
     /**

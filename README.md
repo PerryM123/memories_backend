@@ -15,7 +15,7 @@
 ## 関連リポジトリ
 
 ### API仕様書リポジトリ (Swagger)
-- [/PerryM123/split-my-receipt-up-swagger-doc](https://github.com/PerryM123/split-my-receipt-up-swagger-doc)
+- [PerryM123/split-my-receipt-up-swagger-doc](https://github.com/PerryM123/split-my-receipt-up-swagger-doc)
 
 ### フロントエンド側
 - [PerryM123/split-my-receipt-up-frontend](https://github.com/PerryM123/split-my-receipt-up-frontend)

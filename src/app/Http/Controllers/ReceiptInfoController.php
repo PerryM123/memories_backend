@@ -164,7 +164,6 @@ class ReceiptInfoController extends Controller
     public function getReceiptDetails(string $receipt_id)
     {
         try{
-            throw new \Exception('what the hell');
             $validator = Validator::make(['receipt_id' => $receipt_id], [
                 'receipt_id' => 'required|integer|min:1'
             ]);

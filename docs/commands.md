@@ -88,6 +88,13 @@ show columns from TABLE_NAME_HERE;
 select * from TABLE_NAME_HERE;
 ```
 
+## Import database
+
+```sh
+export MYSQL_ROOT_PASSWORD=password
+docker compose exec -T db mysql -u root -p"$MYSQL_ROOT_PASSWORD" memories_database < ./.db_backups/mysql_backup_example.sql
+```
+
 # Redis
 
 ## check all data in redis session 
@@ -98,4 +105,4 @@ keys *
 
 # Other
 - Local environment: http://local.memories.com/ or http://localhost:8081/
-
+- print objects in test files: `echo $response->getContent()`

@@ -1,11 +1,15 @@
 setup-local-env-files:
 	cp -R ./src/.env.example ./src/.env
 	cp -R ./src/.env.e2e-testing.example ./src/.env.e2e-testing
+	cp -R ./src/.env.testing.example ./src/.env.testing
 	cp -R .devdbrc.example .devdbrc
 	docker compose exec app php artisan key:generate
 
 app-bash:
 	docker compose exec app bash
+
+test:
+	docker compose exec app php artisan test
 
 redis-cli:
 	docker compose exec redis redis-cli

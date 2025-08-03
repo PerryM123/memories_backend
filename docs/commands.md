@@ -92,7 +92,13 @@ select * from TABLE_NAME_HERE;
 
 ```sh
 export MYSQL_ROOT_PASSWORD=password
-docker compose exec -T db mysql -u root -p"$MYSQL_ROOT_PASSWORD" memories_database < ./.db_backups/mysql_backup_example.sql
+docker compose exec -T db mysql -u root -p"$MYSQL_ROOT_PASSWORD" memories_database < ./.db_backups/
+```
+
+## Export database
+
+```sh
+docker compose exec db sh -c 'exec mysqldump -u root -p memories_database' > ./.db_backups/mysql_backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 # Redis

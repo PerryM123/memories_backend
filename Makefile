@@ -36,10 +36,10 @@ laravel-log:
 	tail -f src/storage/logs/laravel.log
 
 mysql:
-	docker compose exec db mysql -u root -p
+	docker compose exec db mysql -u root -p memories_database
 
 mysql-db-backup:
-	docker compose exec db sh -c 'exec mysqldump -u root -p"$MYSQL_ROOT_PASSWORD" memories_database' > ./.db_backups/mysql_backup_$(date +%Y%m%d_%H%M%S).sql
+	docker compose exec db sh -c 'exec mysqldump -u root -p memories_database' > ./.db_backups/mysql_backup_$$(date +%Y%m%d_%H%M%S).sql
 
 e2e-env-up:
 	docker-compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing up -d

@@ -33,5 +33,11 @@ return [
         'apiKey' => env('OPENAI_API_KEY'),
         'apiEndpoint' => env('OPENAI_API_ENDPOINT'),
     ],
-
+    'compressor' => [
+        'bearerToken' => env('IMAGE_COMPRESSOR_BEARER_TOKEN'),
+        'apiEndpoint' => env('IMAGE_COMPRESSOR_API_ENDPOINT'),
+    ],
+    'application' => [
+        'bearerToken' => env('BEARER_TOKEN')
+    ],
 ];

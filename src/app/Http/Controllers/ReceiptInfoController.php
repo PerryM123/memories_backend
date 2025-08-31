@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\ReceiptInfo\Services\ReceiptInfoService;
 use App\Exceptions\S3UploadException;
+use App\Infrastructure\imageCompressor\Services\CompressImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -185,6 +186,42 @@ class ReceiptInfoController extends Controller
             , 200);
         } catch (\Exception $e) {
             Log::error('Unexpected error in storeReceiptInfo', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error_message' => 'An unexpected error occurred'
+            ], 500);
+        }
+    }
+
+    /**
+     * TODO: Delete me 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function testFunctionTodo(Request $request)
+    {
+        Log::info('perry: testFunctionTodo');
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|file|image|max:5120', // max 5MB
+        ]);
+        if ($validator->fails()) {
+            Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
+            return response()->json(['error_info' => 'validation error'], 400);
+        }
+        try{ 
+            // return $this->ReceiptAnalysisService->getInfoFromReceiptImage($imageFile);
+            Log::info('perry: testmm: before');
+            $someImage = $request->file('image');
+            $compressedImage = (new CompressImageService())->compressImage($someImage);
+            Log::info('perry: testmm: after', [
+                'compressedImage' => $compressedImage
+            ]);
+            return response()->json(['compressed_image' => $compressedImage], 200);
+        } catch (\Exception $e) {
+            Log::error('Unexpected error in testFunctionTodo', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);

@@ -29,5 +29,6 @@ Route::middleware([VerifyBearerToken::class])->group(function () {
     Route::get('/receipt-info', [ReceiptInfoController::class, 'index']);
     Route::post('/receipt-info/analyze', [ReceiptInfoController::class, 'analyzeReceiptImage']);
     Route::get('/receipt-info/{receipt_id}', [ReceiptInfoController::class, 'getReceiptDetails']);
+    Route::post('/test2', [ReceiptInfoController::class, 'testFunctionTodo']);
 });
 

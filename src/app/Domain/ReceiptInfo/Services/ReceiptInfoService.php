@@ -28,10 +28,10 @@ class ReceiptInfoService
     {
         return $this->ReceiptInfoRepository->findAllReceipts();
     }
-    public function getPaginatedReceipts(int $page): PaginatedReceiptsDTO
+    public function getPaginatedReceipts(int $page, string $sort_by): PaginatedReceiptsDTO
     {
         Log::info('Services: getPaginatedReceipts');
-        return $this->ReceiptInfoRepository->getPaginatedReceipts($page);
+        return $this->ReceiptInfoRepository->getPaginatedReceipts($page, $sort_by);
     }
 
     /**

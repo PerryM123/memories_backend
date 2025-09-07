@@ -12,7 +12,7 @@ interface ReceiptInfoRepositoryInterface
 {
     public function findById($id): ?Receipt;
     public function findAllReceipts(): Collection;
-    public function getPaginatedReceipts(int $page): PaginatedReceiptsDTO;
+    public function getPaginatedReceipts(int $page, string $sort_by): PaginatedReceiptsDTO;
     public function storeNewReceiptInfoToDatabase(
         string $title,
         string $userWhoPaid,

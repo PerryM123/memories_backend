@@ -107,17 +107,24 @@ class ReceiptInfoRepository implements ReceiptInfoRepositoryInterface
         return $receipt;
     }
 
-    public function getPaginatedReceipts(int $page): PaginatedReceiptsDTO
+    public function getPaginatedReceipts(int $page, string $sort_by): PaginatedReceiptsDTO
     {
         $PAGINATION_PER_PAGE = 10;
         $skip = ($page - 1) * $PAGINATION_PER_PAGE;
-        
-        $receiptInfoCollection = ReceiptInfo::skip($skip)
+        $validSortDirections = ['asc', 'desc'];
+        if (!in_array(strtolower($sort_by), $validSortDirections)) {
+            // 降順と昇順以外であればデフォルトで降順を設定
+            $sort_by = 'desc';
+        }
+        $receiptInfoCollection = ReceiptInfo::orderBy('created_at', strtolower($sort_by))
+            ->skip($skip)
             ->take($PAGINATION_PER_PAGE)
             ->get();
+        $receipt_count = ReceiptInfo::count();
         return new PaginatedReceiptsDTO(
             receipt_data: $receiptInfoCollection,
-            receipt_count: ReceiptInfo::count()
+            receipt_count: $receipt_count,
+            page_count: ceil($receipt_count / 10)
         );
     }
     public function storeNewReceiptInfoToDatabase(

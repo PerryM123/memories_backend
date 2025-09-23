@@ -27,7 +27,17 @@ class ReceiptInfoController extends Controller
     {
         try {
             $validator = Validator::make($request->query(), [
-                'page' => 'sometimes|integer|min:1|max:9999'
+                'page' => 'sometimes|integer|min:1|max:9999',
+                'sort_by' => [
+                    'sometimes', 
+                    'string', 
+                    'max:255', 
+                    function ($_, $sort_by, $fail) {
+                        if ($sort_by !== null && !in_array(strtolower($sort_by), ['asc', 'desc'])) {
+                            $fail('The sort_by parameter must be "asc" or "desc".');
+                        }
+                    }
+                ],
             ]);
             if ($validator->fails()) {
                 Log::error("validation error", ['receiptInfo validation error: ' => $validator->errors()]);
@@ -36,7 +46,8 @@ class ReceiptInfoController extends Controller
                 ], 400);
             }
             $page = $request->query('page', 1);
-            $receiptInfo = $this->ReceiptInfoService->getPaginatedReceipts($page);
+            $sort_by = $request->query('sort_by', 'desc');
+            $receiptInfo = $this->ReceiptInfoService->getPaginatedReceipts($page, $sort_by);
             Log::info("index", ['receiptInfo response' => $receiptInfo]);
             return response()->json($receiptInfo);
         } catch (\Exception $e) {

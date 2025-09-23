@@ -35,6 +35,7 @@ class CompressImageService implements CompressImageServiceInterface
         $base64Image = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($imageFile));
         try {
             $response = Http::withToken($bearerToken, 'Bearer')
+                ->attach('image', file_get_contents($imageFile), $imageFile->getClientOriginalName())
                 ->post($apiEndpoint . '/v1/compress');
             $responseData = $response->json();
             Log::info('perry: after compress request: ', [

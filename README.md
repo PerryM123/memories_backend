@@ -103,6 +103,20 @@ root@584ffe96183c:/app# exit
 $ make setup-local-env-files
 ```
 
+## 全コンテナを起動できたがアプリを開くと「Failed to open stream: Permission denied The exception occurred while attempting to log: The stream or file "/app/storage/logs/laravel.log" could not be opened in append mode」
+
+### 原因
+
+ファイルパミッションの設定が足りてない
+
+### 解決方法
+
+```sh
+$ docker compose exec app bash
+root@584ffe96183c:/app# chown -R www-data:www-data /app/storage
+root@584ffe96183c:/app# chmod -R 775 /app/storage
+```
+
 ## Milestones
 - [x] 以下、アプリが利用するものをコンテナ内で動かすようにdocker化
 	- Laravel App

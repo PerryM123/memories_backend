@@ -99,6 +99,20 @@ root@584ffe96183c:/app# exit
 $ make setup-local-env-files
 ```
 
+## Started all containers without any problems but I'm getting the error: 「Failed to open stream: Permission denied The exception occurred while attempting to log: The stream or file "/app/storage/logs/laravel.log" could not be opened in append mode」
+
+### The Problem
+
+File permissions haven't been setup yet.
+
+### How to fix
+
+```sh
+$ docker compose exec app bash
+root@584ffe96183c:/app# chown -R www-data:www-data /app/storage
+root@584ffe96183c:/app# chmod -R 775 /app/storage
+```
+
 ## Milestones
 - [x] Dockerize everything for my app: 
 	- Laravel App

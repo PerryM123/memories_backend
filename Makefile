@@ -18,7 +18,7 @@ db-bash:
 	docker compose exec db bash
 
 up:
-	 docker-compose up -d app web db minio
+	docker-compose up -d app web db minio
 
 up-all:
 	docker-compose up -d

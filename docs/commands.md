@@ -2,25 +2,25 @@
 
 ## Start containers
 ```sh
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 ## Builds first before starting containers:
 
 ```sh
-$ docker-compose up -d --build
+$ docker compose up -d --build
 ```
 
 ## Enter containers through bash
 ```sh
 $ docker compose exec app bash
-$ docker-compose exec db bash
+$ docker compose exec db bash
 ```
 
 ## Enter commands from outside of containers
 ```sh
 $ docker compose exec db mysql -V
-$ docker-compose exec web nginx -v
+$ docker compose exec web nginx -v
 ```
 
 ## Enter database's mysql

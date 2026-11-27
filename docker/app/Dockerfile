@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.3-fpm
 
 ENV TZ Asia/Tokyo
 
@@ -23,7 +23,7 @@ RUN apt-get update && \
 
 COPY ./docker/app/php.ini /usr/local/etc/php/php.ini
 
-COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 

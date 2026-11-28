@@ -20,6 +20,15 @@ db-bash:
 up:
 	docker compose up -d app web db minio
 
+garage-init:
+	docker/garage/init.sh local-bucket docker-compose.yml
+
+garage-cli:
+	docker compose exec garage /garage status
+
+garage-bucket-list:
+	docker compose exec garage /garage bucket list
+
 up-all:
 	docker compose up -d
 

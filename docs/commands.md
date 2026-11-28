@@ -112,3 +112,15 @@ keys *
 # Other
 - Local environment: http://local.memories.com/ or http://localhost:8081/
 - print objects in test files: `echo $response->getContent()`
+
+# Garage (S3 storage)
+There is no web console. Use the CLI inside the container (the Makefile target `make garage-cli` shows status):
+```sh
+$ docker compose exec garage /garage status
+$ docker compose exec garage /garage bucket list
+$ docker compose exec garage /garage bucket info local-bucket
+$ docker compose exec garage /garage key list
+$ make garage-init   # make local-bucket publicly readable (idempotent)
+```
+- S3 API: http://localhost:9020 / public web: http://localhost:9021 / admin API: http://localhost:9022
+- Public image URL: http://local.memories.com/images/<key>

@@ -49,6 +49,8 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'endpoint' => env('AWS_ENDPOINT'),
+            // Public base URL used by Storage::disk('s3')->url($path)
+            'url' => env('IMAGE_PUBLIC_BASE_URL'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT')
         ],
 

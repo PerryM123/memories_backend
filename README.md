@@ -42,8 +42,6 @@ OpenAI APIを利用するとトークンがかかるので動作確認用のモ�
 ```sh
 # laravel app
 127.0.0.1 local.memories.com
-# local s3 storage
-127.0.0.1 minio
 ```
 
 ### 2. Clone project → コンテナ準備 → ローカル環境起動など
@@ -65,6 +63,30 @@ $ make setup-local-env-files
 うまくいけば http://local.memories.com/ で開くことができます。
 
 ※ http://localhost:8081/ からアクセスも可能！
+
+### 4. S3ストレージ(Garage)の初期化
+
+ローカルS3はMinIOから [Garage](https://garagehq.deuxfleurs.fr/) に置き換えました。レイアウト・バケット・アクセスキーはコンテナ起動時に自動作成されます(`docker-compose.yml`の開発専用の値)。バケットを公開(website mode)にするために、起動後に一度だけ以下を実行してください(何度実行しても問題ありません)。
+
+```sh
+$ make garage-init   # = docker/garage/init.sh local-bucket docker-compose.yml
+```
+
+- S3 API: http://localhost:9020 (region: `garage`, path-style)
+- 公開用Web: http://localhost:9021 (バケットは`Host`ヘッダーで決まる: `local-bucket.web.garage.localhost`)
+- 画像の公開URL: `http://local.memories.com/images/<key>` (nginxがGarageにプロキシ。`IMAGE_PUBLIC_BASE_URL`)
+- ※ MinIOのような管理コンソールはありません。`docker compose exec garage /garage <command>` (例: `bucket list`, `key list`) を使ってください。
+
+#### MinIOからのデータ移行 (一度だけ)
+
+```sh
+$ brew install rclone
+$ rclone config create minio s3 provider=Minio access_key_id=minioadmin secret_access_key=minioadmin endpoint=http://localhost:9010
+$ rclone config create garage s3 provider=Other access_key_id=<GARAGE_DEFAULT_ACCESS_KEY> secret_access_key=<GARAGE_DEFAULT_SECRET_KEY> region=garage endpoint=http://localhost:9020 force_path_style=true acl=private
+$ rclone lsd minio:
+$ rclone copy minio:local-bucket garage:local-bucket --progress   # syncではなくcopy
+$ rclone check minio:local-bucket garage:local-bucket
+```
 
 # 環境構築に対するあるあるの問題と解決方法
 
@@ -122,7 +144,7 @@ root@584ffe96183c:/app# chmod -R 775 /app/storage
 	- Laravel App
 	- Mysql Database
 	- Nginx
-	- Local S3 (MinIO)
+	- Local S3 (Garage)
 - [x] ドメイン駆動設計にバックエンドを実装
 - [x] 外部API(OpenAI API)を呼び出すように実装
 - [x] NuxtのみがLaravel APIを叩けるようにBearer tokensを追加

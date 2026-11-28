@@ -17,6 +17,9 @@ services:
       - 8081:80
     depends_on:
       - app
+      - garage
+    environment:
+      IMAGE_BUCKET: e2e-bucket
     volumes:
       - ./src/:/app
   db:
@@ -56,8 +59,36 @@ services:
     command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data
+  # Garage: S3-compatible object store (replaces MinIO). No admin console;
+  # administer with: docker compose exec garage /garage <command>
+  # S3 API :9020 / public web (website mode) :9021 / admin API :9022
+  garage:
+    image: dxflrs/garage:v2.6.0
+    command: ["/garage", "server", "--single-node", "--default-bucket"]
+    ports:
+      - "9020:3900" # S3 API
+      - "9021:3902" # public web endpoint (bucket chosen by Host header)
+      - "9022:3903" # admin API
+    environment:
+      # !!! DEV-ONLY VALUES - do not reuse outside local/e2e. !!!
+      GARAGE_RPC_SECRET: 553418b702138eaa392ce8295beb4949c6bcac4f7601b6e0e69d33a7432b7700
+      GARAGE_ADMIN_TOKEN: 9E0hkINqC+Lc91bv9FfQAXPAktd9nbk/ilOc1jdHYO0=
+      GARAGE_DEFAULT_ACCESS_KEY: GK9677c43fb0999c9ea7417b8168742c55
+      GARAGE_DEFAULT_SECRET_KEY: 0382fcbe7461907de0bd7de9bdd24d9c9c20b47c544a91829aa0ee018a7e2900
+      GARAGE_DEFAULT_BUCKET: e2e-bucket
+    healthcheck:
+      test: ["CMD", "/garage", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./docker/garage/garage.toml:/etc/garage.toml:ro
+      - garage-e2e_meta:/var/lib/garage/meta
+      - garage-e2e_data:/var/lib/garage/data
 
 volumes:
   mysql-volume:
   minio_data:
   mysql-e2e-volume:
+  garage-e2e_meta:
+  garage-e2e_data:

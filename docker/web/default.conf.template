@@ -17,6 +17,14 @@ server {
         try_files $uri $uri/ /index.php?$query_string;
     }
 
+    # Public images: proxied to Garage's web (website-mode) endpoint.
+    # Garage picks the bucket from the Host header, hence the explicit Host.
+    # e.g. /images/uploads/images/abc.jpg -> bucket object uploads/images/abc.jpg
+    location /images/ {
+        proxy_pass http://garage:3902/;
+        proxy_set_header Host ${IMAGE_BUCKET}.web.garage.localhost;
+    }
+
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 

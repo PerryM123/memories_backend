@@ -38,8 +38,6 @@ Since using OpenAI API requires tokens, this mock environment will act as OpenAI
 ```sh
 # laravel app
 127.0.0.1 local.memories.com
-# local s3 storage
-127.0.0.1 minio
 ```
 
 ### 2. Clone project & docker & make commands
@@ -61,6 +59,30 @@ $ make setup-local-env-files
 You should be able to see the laravel application using the local url: http://local.memories.com/
 
 ※ Also accesible from: http://localhost:8081/
+
+### 4. Initialise S3 storage (Garage)
+
+Local S3 now uses [Garage](https://garagehq.deuxfleurs.fr/) instead of MinIO. The layout, bucket and access key are created automatically when the container starts (dev-only values in `docker-compose.yml`). To make the bucket publicly readable (website mode), run this once after starting the containers (it is safe to re-run):
+
+```sh
+$ make garage-init   # = docker/garage/init.sh local-bucket docker-compose.yml
+```
+
+- S3 API: http://localhost:9020 (region: `garage`, path-style)
+- Public web endpoint: http://localhost:9021 (bucket chosen by the `Host` header: `local-bucket.web.garage.localhost`)
+- Public image URL: `http://local.memories.com/images/<key>` (nginx proxies to Garage; `IMAGE_PUBLIC_BASE_URL`)
+- Note: there is no admin console like MinIO's. Use `docker compose exec garage /garage <command>` (e.g. `bucket list`, `key list`).
+
+#### Migrating data from MinIO (one time)
+
+```sh
+$ brew install rclone
+$ rclone config create minio s3 provider=Minio access_key_id=minioadmin secret_access_key=minioadmin endpoint=http://localhost:9010
+$ rclone config create garage s3 provider=Other access_key_id=<GARAGE_DEFAULT_ACCESS_KEY> secret_access_key=<GARAGE_DEFAULT_SECRET_KEY> region=garage endpoint=http://localhost:9020 force_path_style=true acl=private
+$ rclone lsd minio:
+$ rclone copy minio:local-bucket garage:local-bucket --progress   # copy, not sync
+$ rclone check minio:local-bucket garage:local-bucket
+```
 
 # Common Pitfalls with Preparing Local Environment And How To Solve Them
 
@@ -118,7 +140,7 @@ root@584ffe96183c:/app# chmod -R 775 /app/storage
 	- Laravel App
 	- Mysql Database
 	- Nginx
-	- Local S3 (MinIO)
+	- Local S3 (Garage)
 - [x] Build the backend using Domain Driven Design
 - [x] Setup external APIs (OpenAI API) to be used within my app
 - [x] Integrate Bearer tokens so that only Nuxt can make requests to the laravel API

@@ -51,13 +51,13 @@ mysql-db-backup:
 	docker compose exec db sh -c 'exec mysqldump -u root -p memories_database' > ./.db_backups/mysql_backup_$$(date +%Y%m%d_%H%M%S).sql
 
 e2e-env-up:
-	docker compose -f docker compose.e2e.yml --env-file ./src/.env.e2e-testing up -d
+	docker compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing up -d
 
 e2e-env-down:
-	docker compose -f docker compose.e2e.yml --env-file ./src/.env.e2e-testing down
+	docker compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing down
 
 e2e-migrate:
-	docker compose -f docker compose.e2e.yml --env-file ./src/.env.e2e-testing exec app php artisan migrate:refresh --seed --env=e2e-testing
+	docker compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing exec app php artisan migrate:refresh --seed --env=e2e-testing
 
 e2e-up-with-build:
-	docker compose -f docker compose.e2e.yml --env-file ./src/.env.e2e-testing up -d --build
+	docker compose -f docker-compose.e2e.yml --env-file ./src/.env.e2e-testing up -d --build

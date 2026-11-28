@@ -77,17 +77,6 @@ $ make garage-init   # = docker/garage/init.sh local-bucket docker-compose.yml
 - 画像の公開URL: `http://local.memories.com/images/<key>` (nginxがGarageにプロキシ。`IMAGE_PUBLIC_BASE_URL`)
 - ※ MinIOのような管理コンソールはありません。`docker compose exec garage /garage <command>` (例: `bucket list`, `key list`) を使ってください。
 
-#### MinIOからのデータ移行 (一度だけ)
-
-```sh
-$ brew install rclone
-$ rclone config create minio s3 provider=Minio access_key_id=minioadmin secret_access_key=minioadmin endpoint=http://localhost:9010
-$ rclone config create garage s3 provider=Other access_key_id=<GARAGE_DEFAULT_ACCESS_KEY> secret_access_key=<GARAGE_DEFAULT_SECRET_KEY> region=garage endpoint=http://localhost:9020 force_path_style=true acl=private
-$ rclone lsd minio:
-$ rclone copy minio:local-bucket garage:local-bucket --progress   # syncではなくcopy
-$ rclone check minio:local-bucket garage:local-bucket
-```
-
 # 環境構築に対するあるあるの問題と解決方法
 
 ## make setup-local-env-filesでFailed to open stream: No such file or directoryエラーが発生した場合

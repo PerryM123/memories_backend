@@ -42,20 +42,6 @@ services:
   #     - "./data/redis:/data"
   #     - "./docker/redis/redis.conf:/etc/redis.conf"
   #   command: ["redis-server", "/etc/redis.conf"] # TODO: 確認必須
-  minio:
-    image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z@sha256:b6bfe7239bfc83fb90d31612d9704d86039dd714f7904b3f1ad68f211e602372
-    container_name: minio
-    ports:
-      # API access
-      - "9000:9000"
-      # Admin UI
-      - "9001:9001"
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-    command: server /data --console-address ":9001"
-    volumes:
-      - minio_data:/data
   # Garage: S3-compatible object store (replaces MinIO). No admin console;
   # administer with: docker compose exec garage /garage <command>
   # S3 API :9020 / public web (website mode) :9021 / admin API :9022
@@ -85,6 +71,5 @@ services:
 
 volumes:
   mysql-volume:
-  minio_data:
   garage_meta:
   garage_data:

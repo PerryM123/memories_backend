@@ -18,7 +18,7 @@ db-bash:
 	docker compose exec db bash
 
 up:
-	docker compose up -d app web db minio
+	docker compose up -d app web db garage
 
 garage-init:
 	docker/garage/init.sh local-bucket docker-compose.yml

@@ -73,17 +73,6 @@ $ make garage-init   # = docker/garage/init.sh local-bucket docker-compose.yml
 - Public image URL: `http://local.memories.com/images/<key>` (nginx proxies to Garage; `IMAGE_PUBLIC_BASE_URL`)
 - Note: there is no admin console like MinIO's. Use `docker compose exec garage /garage <command>` (e.g. `bucket list`, `key list`).
 
-#### Migrating data from MinIO (one time)
-
-```sh
-$ brew install rclone
-$ rclone config create minio s3 provider=Minio access_key_id=minioadmin secret_access_key=minioadmin endpoint=http://localhost:9010
-$ rclone config create garage s3 provider=Other access_key_id=<GARAGE_DEFAULT_ACCESS_KEY> secret_access_key=<GARAGE_DEFAULT_SECRET_KEY> region=garage endpoint=http://localhost:9020 force_path_style=true acl=private
-$ rclone lsd minio:
-$ rclone copy minio:local-bucket garage:local-bucket --progress   # copy, not sync
-$ rclone check minio:local-bucket garage:local-bucket
-```
-
 # Common Pitfalls with Preparing Local Environment And How To Solve Them
 
 ## After doing make setup-local-env-files, Failed to open stream: No such file or directory
